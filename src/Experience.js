@@ -7,7 +7,7 @@ import {
   Sky,
   useTexture,
 } from "@react-three/drei";
-import { useControls } from "leva";
+// import { useControls } from "leva";
 import { Perf } from "r3f-perf";
 
 import Factory from "./Factory";
@@ -16,7 +16,6 @@ export default function Experience({ handleSelectView, sidebarIsHidden }) {
   const [cameraSubject, setCameraSubject] = useState(null);
   const boxRef = useRef(null);
   const groupRef = useRef(null);
-  const sphereRef = useRef(null);
   const cameraRef = useRef(null);
   const initialPosition = new THREE.Vector3(3, 8, 20);
   const initialTarget = new THREE.Vector3(0, 0, 0);
@@ -24,40 +23,40 @@ export default function Experience({ handleSelectView, sidebarIsHidden }) {
   grass.wrapS = grass.wrapT = THREE.RepeatWrapping;
   grass.repeat.set(200, 200);
 
-  const { rotationSpeed, planeColor, showPerf } = useControls({
-    rotationSpeed: {
-      value: 0,
-      min: 0,
-      max: 2,
-      step: 0.2,
-      label: "Rotation speed",
-    },
-    planeColor: {
-      value: "#98ff93",
-      label: "Ground color",
-    },
-    showPerf: {
-      value: true,
-      label: "Show performance stats",
-    },
-  });
+  // const { rotationSpeed, planeColor, showPerf } = useControls({
+  //   rotationSpeed: {
+  //     value: 0,
+  //     min: 0,
+  //     max: 2,
+  //     step: 0.2,
+  //     label: "Rotation speed",
+  //   },
+  //   planeColor: {
+  //     value: "#98ff93",
+  //     label: "Ground color",
+  //   },
+  //   showPerf: {
+  //     value: true,
+  //     label: "Show performance stats",
+  //   },
+  // });
 
-  useFrame((state, delta) => {
-    const { camera } = state;
-    const angle = state.clock.getElapsedTime();
-    groupRef.current.rotation.y += delta * rotationSpeed;
+  // useFrame((state, delta) => {
+  //   const { camera } = state;
+  //   const angle = state.clock.getElapsedTime();
+  //   groupRef.current.rotation.y += delta * rotationSpeed;
 
-    if (cameraSubject === "box") {
-      camera.position.lerp(
-        {
-          x: boxRef.current.position.x,
-          y: boxRef.current.position.y + 1,
-          z: 4,
-        },
-        0.025
-      );
-    }
-  });
+  //   if (cameraSubject === "box") {
+  //     camera.position.lerp(
+  //       {
+  //         x: boxRef.current.position.x,
+  //         y: boxRef.current.position.y + 1,
+  //         z: 4,
+  //       },
+  //       0.025
+  //     );
+  //   }
+  // });
 
   const moveCameraTo = (view) => {
     if (cameraRef.current) {
@@ -93,7 +92,8 @@ export default function Experience({ handleSelectView, sidebarIsHidden }) {
 
   return (
     <>
-      {showPerf && <Perf position="top-left" />}
+      {/* {showPerf && <Perf position="top-left" />} */}
+      <Perf position="top-left" />
 
       {/* <OrbitControls
         ref={cameraRef}
