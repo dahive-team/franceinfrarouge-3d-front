@@ -1,23 +1,23 @@
-import { useState, useEffect, useRef, Suspense } from "react";
+import { useRef, Suspense } from "react";
 import * as THREE from "three";
-import { useFrame } from "@react-three/fiber";
 import {
-  CameraControls,
   SoftShadows,
   Sky,
   useTexture,
+  Html,
+  PerspectiveCamera,
 } from "@react-three/drei";
 // import { useControls } from "leva";
 import { Perf } from "r3f-perf";
 
+import { getView } from "./content";
+
+import Camera from "./Camera";
 import Factory from "./Factory";
 
-export default function Experience({ handleSelectView, sidebarIsHidden }) {
-  const [cameraSubject, setCameraSubject] = useState(null);
-  const boxRef = useRef(null);
+export default function Experience({ handleSelectView }) {
   const groupRef = useRef(null);
   const cameraRef = useRef(null);
-  const initialPosition = new THREE.Vector3(3, 8, 20);
   const initialTarget = new THREE.Vector3(0, 0, 0);
   const grass = useTexture("/paving.jpg");
   grass.wrapS = grass.wrapT = THREE.RepeatWrapping;
@@ -41,23 +41,6 @@ export default function Experience({ handleSelectView, sidebarIsHidden }) {
   //   },
   // });
 
-  // useFrame((state, delta) => {
-  //   const { camera } = state;
-  //   const angle = state.clock.getElapsedTime();
-  //   groupRef.current.rotation.y += delta * rotationSpeed;
-
-  //   if (cameraSubject === "box") {
-  //     camera.position.lerp(
-  //       {
-  //         x: boxRef.current.position.x,
-  //         y: boxRef.current.position.y + 1,
-  //         z: 4,
-  //       },
-  //       0.025
-  //     );
-  //   }
-  // });
-
   const moveCameraTo = (view) => {
     if (cameraRef.current) {
       const { position, target } = view;
@@ -73,45 +56,11 @@ export default function Experience({ handleSelectView, sidebarIsHidden }) {
     }
   };
 
-  useEffect(() => {
-    if (!sidebarIsHidden) return;
-    const controls = cameraRef.current;
-
-    if (!controls) return;
-
-    controls.setLookAt(
-      initialPosition.x,
-      initialPosition.y,
-      initialPosition.z,
-      initialTarget.x,
-      initialTarget.y,
-      initialTarget.z,
-      true
-    );
-  }, [sidebarIsHidden]);
-
   return (
     <>
       {/* {showPerf && <Perf position="top-left" />} */}
+      <PerspectiveCamera makeDefault />
       <Perf position="top-left" />
-
-      {/* <OrbitControls
-        ref={cameraRef}
-        makeDefault
-        maxPolarAngle={Math.PI / 2}
-        minDistance={10}
-        maxDistance={30}
-      /> */}
-      <CameraControls
-        ref={cameraRef}
-        makeDefault
-        minPolarAngle={0}
-        maxPolarAngle={Math.PI / 2}
-        minDistance={10}
-        maxDistance={30}
-        minAzimuthAngle={-Infinity}
-        maxAzimuthAngle={Infinity}
-      />
       <SoftShadows size={25} samples={10} focus={0} />
       <Sky
         distance={450000}
@@ -128,6 +77,7 @@ export default function Experience({ handleSelectView, sidebarIsHidden }) {
       <ambientLight intensity={1.5} />
       <group ref={groupRef}>
         <Suspense fallback={null}>
+          <Camera />
           <Factory
             scale={0.4}
             position={[4, -1, 2]}

@@ -1,12 +1,10 @@
 html,
 body,
 #root {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow-x: clip;
+  margin: 0;
 }
 
 *,
@@ -16,7 +14,16 @@ body,
   font-family: "Outfit", sans-serif;
 }
 
+.srollContainer {
+  height: 600vh;
+  position: relative;
+}
+
 .canvas {
+  position: sticky !important;
+  top: 0;
+  width: 100vw !important;
+  height: 100vh !important;
   z-index: 0;
 }
 

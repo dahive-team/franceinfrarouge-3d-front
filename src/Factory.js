@@ -27,7 +27,7 @@ export default function Factory({ onClickEvent, moveCameraTo, ...props }) {
           />
           <Html
             wrapperClass="label"
-            distanceFactor={11}
+            distanceFactor={8}
             position={[0, -10, 5]}
             occlude={[receptionRef]}
           >
@@ -43,7 +43,7 @@ export default function Factory({ onClickEvent, moveCameraTo, ...props }) {
           />
           <Html
             wrapperClass="label"
-            distanceFactor={11}
+            distanceFactor={8}
             position={[-20, -4, 3]}
             occlude={[receptionRef, grayBuildingRef]}
           >
