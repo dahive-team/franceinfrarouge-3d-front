@@ -15,12 +15,46 @@ body,
 }
 
 .srollContainer {
-  height: 600vh;
   position: relative;
 }
 
+.journey-buttons {
+  position: fixed;
+  top: 0;
+  left: 2rem;
+  z-index: 1;
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 5px;
+
+  li {
+    &:first-of-type {
+      button {
+        padding-top: 1.5rem;
+      }
+    }
+
+    &:last-of-type {
+      button {
+        padding-bottom: 1.5rem;
+      }
+    }
+  }
+
+  button {
+    cursor: pointer;
+    background-color: transparent;
+    border: 0;
+    padding: 0.5rem 2rem;
+    font-size: 1.2rem;
+  }
+}
+
 .canvas {
-  position: sticky !important;
+  position: fixed !important;
   top: 0;
   width: 100vw !important;
   height: 100vh !important;

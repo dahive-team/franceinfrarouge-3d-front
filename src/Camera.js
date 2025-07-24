@@ -41,19 +41,8 @@ export default function Camera({ onClickEvent, moveCameraTo, ...props }) {
   camera.lookAt(0, 0, 0);
 
   useFrame((state, delta) => {
-    console.log(scrollYProgress.get());
     camera.position.set(xPos.get(), yPos.get(), zPos.get());
     camera.lookAt(LookX.get(), LookY.get(), LookZ.get());
-
-    //   // The offset is between 0 and 1, you can apply it to your models any way you like
-    //   const offset = 1 - scroll.offset;
-
-    //   state.camera.position.set(
-    //     Math.cos(offset * 4) * -10,
-    //     Math.atan(offset * Math.PI * 2) * 5,
-    //     Math.cos(offset * Math.PI * 2) * 20
-    //   );
-    //   state.camera.lookAt(0, 0, 0);
   });
 
   return <></>;
