@@ -1,4 +1,4 @@
-const views = [
+export const views = [
   {
     view: "initial",
     title: "",
@@ -34,4 +34,14 @@ const views = [
 
 export const getView = (view) => {
   return views.find(({ view: v }) => v === view);
+};
+
+export const getPrevNexView = (view) => {
+  const index = views.findIndex(({ view: v }) => v === view);
+  if (index === -1) return null;
+
+  const prevView = views[index - 1] || null;
+  const nextView = views[index + 1] || null;
+
+  return { prevView, nextView };
 };

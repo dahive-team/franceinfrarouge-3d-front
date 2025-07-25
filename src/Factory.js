@@ -8,13 +8,6 @@ export default function Factory({ onClickEvent, moveCameraTo, ...props }) {
   const receptionRef = useRef(null);
   const grayBuildingRef = useRef(null);
 
-  const handleClick = (v) => {
-    const view = getView(v);
-    const { position, target } = view;
-    moveCameraTo({ position, target });
-    onClickEvent(v);
-  };
-
   return (
     <group {...props} dispose={null}>
       <mesh

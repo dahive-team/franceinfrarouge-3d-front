@@ -1,41 +1,40 @@
 import { useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { ReactLenis, useLenis } from "lenis/react";
+import { ReactLenis } from "lenis/react";
 
-import { getView } from "./content";
+import { getView, getPrevNexView } from "./content";
 
 import Experience from "./Experience";
 
 export default function App() {
-  const [viewContent, setViewContent] = useState(null);
-  const handleSelectView = (view) => {
-    const content = getView(view);
-    setViewContent(content);
+  const [view, setView] = useState(null);
+  const handleSelectView = (v) => {
+    setView(v);
   };
 
+  const viewContent = getView(view) || null;
+
   const handleCloseSidebar = () => {
-    setViewContent(null);
+    setView("initial");
   };
+  const { prevView, nextView } = getPrevNexView(viewContent?.view) || {};
+  const buttonIsActive = (id) => viewContent?.view === id;
 
   return (
     <>
       <ReactLenis root />
       <section className="srollContainer">
         <ul className="journey-buttons">
-          <li>
+          <li className={buttonIsActive("initial") ? "isActive" : ""}>
             <button onClick={() => handleSelectView("initial")}>
-              1 - Vue d'ensemble
+              Vue d'ensemble
             </button>
           </li>
-          <li>
-            <button onClick={() => handleSelectView("factory")}>
-              2 - Usine
-            </button>
+          <li className={buttonIsActive("factory") ? "isActive" : ""}>
+            <button onClick={() => handleSelectView("factory")}>Usine</button>
           </li>
-          <li>
-            <button onClick={() => handleSelectView("parking")}>
-              3 - Parking
-            </button>
+          <li className={buttonIsActive("parking") ? "isActive" : ""}>
+            <button onClick={() => handleSelectView("parking")}>Parking</button>
           </li>
         </ul>
         <Canvas
@@ -63,6 +62,24 @@ export default function App() {
           {viewContent?.image && (
             <img src={viewContent?.image} alt={viewContent?.title} />
           )}
+          <div className="prevNextButtons">
+            {prevView && (
+              <button
+                className="prev"
+                onClick={() => handleSelectView(prevView?.view)}
+              >
+                Précédent
+              </button>
+            )}
+            {nextView && (
+              <button
+                className="next"
+                onClick={() => handleSelectView(nextView?.view)}
+              >
+                Suivant
+              </button>
+            )}
+          </div>
         </aside>
       </section>
     </>

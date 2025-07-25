@@ -1,29 +1,16 @@
-import { useState, useEffect, useRef, Suspense } from "react";
-import { Vector3 } from "three";
-import { useFrame } from "@react-three/fiber";
-import {
-  SoftShadows,
-  Sky,
-  CameraControls,
-  useTexture,
-  Html,
-  PerspectiveCamera,
-} from "@react-three/drei";
+import { useEffect, useRef, Suspense } from "react";
+import { SoftShadows, Sky, CameraControls } from "@react-three/drei";
 // import { useControls } from "leva";
-import { Perf } from "r3f-perf";
+// import { Perf } from "r3f-perf";
 
 import { getView } from "./content";
 
-import Camera from "./Camera";
 import Factory from "./Factory";
+import Buttons from "./Buttons";
 
 export default function Experience({ objectToView, handleSelectView }) {
   const groupRef = useRef(null);
   const cameraRef = useRef(null);
-  const controls = useRef(null);
-  const initialPosition = new Vector3(3, 8, 20);
-  const initialTarget = new Vector3(0, 0, 0);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const moveCameraTo = (view) => {
     if (cameraRef.current) {
@@ -43,6 +30,7 @@ export default function Experience({ objectToView, handleSelectView }) {
   useEffect(() => {
     setTimeout(() => {
       const initialView = getView("initial");
+      handleSelectView("initial");
       moveCameraTo(initialView);
     }, 1000);
   }, []);
@@ -51,11 +39,6 @@ export default function Experience({ objectToView, handleSelectView }) {
     objectToView && moveCameraTo(objectToView);
   }, [objectToView]);
 
-  // useFrame((state, delta) => {
-  //   const elapsedTime = state.clock.getElapsedTime();
-  //   const camera = cameraRef.current;
-  // });
-
   return (
     <>
       {/* {showPerf && <Perf position="top-left" />} */}
@@ -63,7 +46,7 @@ export default function Experience({ objectToView, handleSelectView }) {
       <CameraControls
         ref={cameraRef}
         target={[0, 10, 0]}
-        minDistance={10}
+        minDistance={15}
         maxDistance={60}
         maxPolarAngle={Math.PI / 2}
       />
@@ -88,7 +71,10 @@ export default function Experience({ objectToView, handleSelectView }) {
             scale={0.4}
             position={[4, -1, 2]}
             onClickEvent={handleSelectView}
-            // moveCameraTo={moveCameraTo}
+          />
+          <Buttons
+            onClickEvent={handleSelectView}
+            moveCameraTo={moveCameraTo}
           />
         </Suspense>
       </group>
