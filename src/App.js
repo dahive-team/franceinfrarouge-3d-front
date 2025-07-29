@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { ReactLenis } from "lenis/react";
 
-import { getView, getPrevNexView } from "./content";
+import { getView, getPrevNextView } from "./content";
 
 import Experience from "./Experience";
 
 export default function App() {
+  const scrollContainerRef = useRef(null);
+  const scrollCooldown = useRef(false);
   const [view, setView] = useState(null);
   const handleSelectView = (v) => {
     setView(v);
@@ -17,13 +19,42 @@ export default function App() {
   const handleCloseSidebar = () => {
     setView("initial");
   };
-  const { prevView, nextView } = getPrevNexView(viewContent?.view) || {};
+  const { prevView, nextView } = getPrevNextView(viewContent?.view) || {};
   const buttonIsActive = (id) => viewContent?.view === id;
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = (e) => {
+      if (scrollCooldown.current) return;
+
+      const delta = e.deltaY;
+
+      if (delta > 50 && nextView) {
+        setView(nextView.view);
+        scrollCooldown.current = true;
+      } else if (delta < -50 && prevView) {
+        setView(prevView.view);
+        scrollCooldown.current = true;
+      }
+
+      setTimeout(() => {
+        scrollCooldown.current = false;
+      }, 1000);
+    };
+
+    container.addEventListener("wheel", handleScroll, { passive: true });
+
+    return () => {
+      container.removeEventListener("wheel", handleScroll);
+    };
+  }, [viewContent?.view, nextView, prevView]);
 
   return (
     <>
       <ReactLenis root />
-      <section className="srollContainer">
+      <section ref={scrollContainerRef} className="scrollContainer">
         <ul className="journey-buttons">
           <li className={buttonIsActive("initial") ? "isActive" : ""}>
             <button onClick={() => handleSelectView("initial")}>
@@ -54,7 +85,10 @@ export default function App() {
           />
         </Canvas>
         <aside
-          className={`sidebar ${viewContent?.triggerSidebar ? "show" : ""}`}
+          data-lenis-prevent
+          className={`journey-sidebar ${
+            viewContent?.triggerSidebar ? "show" : ""
+          }`}
         >
           <button className="closeSidebar" onClick={handleCloseSidebar} />
           <h1>{viewContent?.title}</h1>

@@ -7,6 +7,7 @@ import { getView } from "./content";
 
 import Factory from "./Factory";
 import Buttons from "./Buttons";
+import Camera from "./Camera"; // Import the camera component
 
 export default function Experience({ objectToView, handleSelectView }) {
   const groupRef = useRef(null);
@@ -15,15 +16,7 @@ export default function Experience({ objectToView, handleSelectView }) {
   const moveCameraTo = (view) => {
     if (cameraRef.current) {
       const { position, target } = view;
-      cameraRef.current?.setLookAt(
-        position[0],
-        position[1],
-        position[2],
-        target[0],
-        target[1],
-        target[2],
-        true
-      );
+      cameraRef.current?.setLookAt(...position, ...target, true);
     }
   };
 
@@ -43,13 +36,14 @@ export default function Experience({ objectToView, handleSelectView }) {
     <>
       {/* {showPerf && <Perf position="top-left" />} */}
 
-      <CameraControls
+      {/* <CameraControls
         ref={cameraRef}
         target={[0, 10, 0]}
         minDistance={15}
         maxDistance={60}
         maxPolarAngle={Math.PI / 2}
-      />
+      /> */}
+      <Camera ref={cameraRef} />
       <SoftShadows size={25} samples={10} focus={0} />
       <Sky
         distance={450000}

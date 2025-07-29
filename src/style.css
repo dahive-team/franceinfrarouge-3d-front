@@ -1,9 +1,9 @@
 html,
 body,
 #root {
+  position: fixed;
   width: 100%;
   height: 100%;
-  overflow-x: clip;
   margin: 0;
 }
 
@@ -14,13 +14,18 @@ body,
   font-family: "Outfit", sans-serif;
 }
 
-.srollContainer {
+#root {
+  position: relative;
+  height: 80vh;
+}
+
+.scrollContainer {
   position: relative;
 }
 
 .journey-buttons {
-  position: fixed;
-  top: 0;
+  position: absolute;
+  top: 2rem;
   left: 2rem;
   z-index: 1;
   list-style: none;
@@ -81,7 +86,7 @@ body,
 }
 
 .canvas {
-  position: fixed !important;
+  position: absolute !important;
   top: 0;
   width: 100vw !important;
   height: 100vh !important;
@@ -111,30 +116,34 @@ button:hover {
   scale: 1.1;
 }
 
-.sidebar {
-  position: fixed;
-  top: 0;
+.journey-sidebar {
+  position: absolute;
+  top: 10vh;
+  bottom: 10vh;
   right: -30vw;
   width: 20vw;
-  height: 100%;
+  height: calc(80vh - 4rem);
   background-color: white;
-  padding: 10vh 4vw;
+  padding: 2rem;
   z-index: 1;
+  margin-top: 0;
+  border-radius: 20px;
+  overflow-y: scroll;
   transition: right 0.4s ease-out;
 }
 
-.sidebar h1 {
+.journey-sidebar h1 {
   font-size: 2rem;
   margin-top: 0;
 }
 
-.sidebar p {
+.journey-sidebar p {
   font-size: clamp(1rem, 1vw, 1.2rem);
   line-height: 1.3;
   color: rgb(84, 84, 84);
 }
 
-.sidebar img {
+.journey-sidebar img {
   width: 100%;
   border-radius: 10px;
 }
@@ -165,8 +174,8 @@ button:hover {
   translate: -50% -50%;
 }
 
-.sidebar.show {
-  right: 0;
+.journey-sidebar.show {
+  right: 2rem;
 }
 
 #leva__root > div {

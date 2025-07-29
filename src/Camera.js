@@ -1,49 +1,76 @@
 import { useThree, useFrame } from "@react-three/fiber";
-import { useScroll, useTransform } from "motion/react";
+import { useImperativeHandle, useRef, forwardRef } from "react";
+import { Vector3 } from "three";
 
-export default function Camera({ onClickEvent, moveCameraTo, ...props }) {
-  const { camera } = useThree();
-  const { scrollYProgress } = useScroll();
+function easeInOutCubic(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
 
-  const xPos = useTransform(
-    scrollYProgress,
-    [0, 0.25, 0.5, 0.6, 0.8, 1],
-    [4, 8, 2, 0, -3, -10]
-  );
-  const yPos = useTransform(
-    scrollYProgress,
-    [0, 0.25, 0.5, 0.6, 0.8, 1],
-    [6, 0, 4, 4, 1, 5]
-  );
-  const zPos = useTransform(
-    scrollYProgress,
-    [0, 0.25, 0.5, 0.6, 0.8, 1],
-    [20, 10, 7, 9, 9, 7]
-  );
+const Camera = forwardRef((props, ref) => {
+  const { camera, mouse, clock } = useThree();
 
-  const LookX = useTransform(
-    scrollYProgress,
-    [0, 0.25, 0.5, 0.6, 0.8, 1],
-    [0, 0, 0, 0, 0, 0]
-  );
-  const LookZ = useTransform(
-    scrollYProgress,
-    [0, 0.25, 0.5, 0.6, 0.8, 1],
-    [0, 0, 0, 0, 0, 0]
-  );
-  const LookY = useTransform(
-    scrollYProgress,
-    [0, 0.25, 0.5, 0.6, 0.8, 1],
-    [0, 0, 0, 0, 0, 0]
-  );
+  const fromPos = useRef(new Vector3());
+  const toPos = useRef(new Vector3());
+  const fromTarget = useRef(new Vector3());
+  const toTarget = useRef(new Vector3());
+  const currentTarget = useRef(new Vector3());
 
-  camera.position.set(2, 5, 20);
-  camera.lookAt(0, 0, 0);
+  const basePos = useRef(new Vector3()); // position finale sans sway
+  const duration = 1.5;
+  const startTime = useRef(0);
+  const isTransitioning = useRef(false);
 
-  useFrame((state, delta) => {
-    camera.position.set(xPos.get(), yPos.get(), zPos.get());
-    camera.lookAt(LookX.get(), LookY.get(), LookZ.get());
+  useFrame(() => {
+    const elapsed = clock.getElapsedTime() - startTime.current;
+    const t = Math.min(elapsed / duration, 1);
+    const easing = easeInOutCubic(t);
+
+    // sway à appliquer à chaque frame (même pendant la transition)
+    const swayStrength = 2;
+    const sway = new Vector3(0, mouse.y * swayStrength, mouse.x * swayStrength);
+
+    let targetPos = new Vector3();
+
+    if (isTransitioning.current) {
+      // Interpolation vers la position de transition
+      targetPos.lerpVectors(fromPos.current, toPos.current, easing);
+      currentTarget.current.lerpVectors(
+        fromTarget.current,
+        toTarget.current,
+        easing
+      );
+
+      if (t >= 1) {
+        isTransitioning.current = false;
+        basePos.current.copy(toPos.current);
+        currentTarget.current.copy(toTarget.current);
+      }
+    } else {
+      // Pas de transition : on part de la base position
+      targetPos.copy(basePos.current);
+    }
+
+    // On applique le sway au point de destination, puis on lerp la position
+    targetPos.add(sway);
+    camera.position.lerp(targetPos, 0.1);
+
+    camera.lookAt(currentTarget.current);
   });
 
-  return <></>;
-}
+  useImperativeHandle(ref, () => ({
+    setLookAt(x, y, z, tx, ty, tz) {
+      fromPos.current.copy(camera.position);
+      toPos.current.set(x, y, z);
+
+      fromTarget.current.copy(currentTarget.current);
+      toTarget.current.set(tx, ty, tz);
+
+      startTime.current = clock.getElapsedTime();
+      isTransitioning.current = true;
+    },
+  }));
+
+  return null;
+});
+
+export default Camera;

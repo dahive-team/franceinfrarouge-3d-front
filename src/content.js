@@ -36,7 +36,7 @@ export const getView = (view) => {
   return views.find(({ view: v }) => v === view);
 };
 
-export const getPrevNexView = (view) => {
+export const getPrevNextView = (view) => {
   const index = views.findIndex(({ view: v }) => v === view);
   if (index === -1) return null;
 

@@ -4,7 +4,7 @@ import { useGLTF, Html } from "@react-three/drei";
 import { getView } from "./content";
 
 export default function Factory({ onClickEvent, moveCameraTo, ...props }) {
-  const { nodes, materials } = useGLTF("/factory.glb");
+  const { nodes, materials } = useGLTF("/factory.glb", true);
   const receptionRef = useRef(null);
   const grayBuildingRef = useRef(null);
 
