@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { ReactLenis } from "lenis/react";
 
-import { getView, getPrevNextView } from "./content";
+import { views, getView, getPrevNextView } from "./content";
 
 import Experience from "./Experience";
 
@@ -17,10 +17,10 @@ export default function App() {
   const viewContent = getView(view) || null;
 
   const handleCloseSidebar = () => {
-    setView("initial");
+    setView("view0");
   };
-  const { prevView, nextView } = getPrevNextView(viewContent?.view) || {};
-  const buttonIsActive = (id) => viewContent?.view === id;
+  const { prevView, nextView } = getPrevNextView(viewContent?.id) || {};
+  const buttonIsActive = (id) => viewContent?.id === id;
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -32,10 +32,10 @@ export default function App() {
       const delta = e.deltaY;
 
       if (delta > 50 && nextView) {
-        setView(nextView.view);
+        setView(nextView.id);
         scrollCooldown.current = true;
       } else if (delta < -50 && prevView) {
-        setView(prevView.view);
+        setView(prevView.id);
         scrollCooldown.current = true;
       }
 
@@ -49,24 +49,18 @@ export default function App() {
     return () => {
       container.removeEventListener("wheel", handleScroll);
     };
-  }, [viewContent?.view, nextView, prevView]);
+  }, [viewContent, nextView, prevView]);
 
   return (
     <>
       <ReactLenis root />
       <section ref={scrollContainerRef} className="scrollContainer">
         <ul className="journey-buttons">
-          <li className={buttonIsActive("initial") ? "isActive" : ""}>
-            <button onClick={() => handleSelectView("initial")}>
-              Vue d'ensemble
-            </button>
-          </li>
-          <li className={buttonIsActive("factory") ? "isActive" : ""}>
-            <button onClick={() => handleSelectView("factory")}>Usine</button>
-          </li>
-          <li className={buttonIsActive("parking") ? "isActive" : ""}>
-            <button onClick={() => handleSelectView("parking")}>Parking</button>
-          </li>
+          {views?.map(({ id, title }) => (
+            <li key={id} className={buttonIsActive(id) ? "isActive" : ""}>
+              <button onClick={() => handleSelectView(id)}>{title}</button>
+            </li>
+          ))}
         </ul>
         <Canvas
           shadows
@@ -100,7 +94,7 @@ export default function App() {
             {prevView && (
               <button
                 className="prev"
-                onClick={() => handleSelectView(prevView?.view)}
+                onClick={() => handleSelectView(prevView?.id)}
               >
                 Précédent
               </button>
@@ -108,7 +102,7 @@ export default function App() {
             {nextView && (
               <button
                 className="next"
-                onClick={() => handleSelectView(nextView?.view)}
+                onClick={() => handleSelectView(nextView?.id)}
               >
                 Suivant
               </button>

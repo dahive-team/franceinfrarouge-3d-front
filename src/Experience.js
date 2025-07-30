@@ -1,5 +1,5 @@
 import { useEffect, useRef, Suspense } from "react";
-import { SoftShadows, Sky, CameraControls } from "@react-three/drei";
+import { SoftShadows, Sky } from "@react-three/drei";
 // import { useControls } from "leva";
 // import { Perf } from "r3f-perf";
 
@@ -15,15 +15,15 @@ export default function Experience({ objectToView, handleSelectView }) {
 
   const moveCameraTo = (view) => {
     if (cameraRef.current) {
-      const { position, target } = view;
-      cameraRef.current?.setLookAt(...position, ...target, true);
+      const { cameraPosition, target } = view;
+      cameraRef.current?.setLookAt(...cameraPosition, ...target, true);
     }
   };
 
   useEffect(() => {
     setTimeout(() => {
-      const initialView = getView("initial");
-      handleSelectView("initial");
+      const initialView = getView("view0");
+      handleSelectView("view0");
       moveCameraTo(initialView);
     }, 1000);
   }, []);
@@ -69,6 +69,7 @@ export default function Experience({ objectToView, handleSelectView }) {
           <Buttons
             onClickEvent={handleSelectView}
             moveCameraTo={moveCameraTo}
+            currentObject={objectToView}
           />
         </Suspense>
       </group>

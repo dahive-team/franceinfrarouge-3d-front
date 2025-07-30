@@ -1,26 +1,44 @@
 import { Html } from "@react-three/drei";
 
-import { getView } from "./content";
+import { views, getView } from "./content";
 
-export default function Buttons({ onClickEvent, moveCameraTo, ...props }) {
-  const handleClick = (v) => {
-    const view = getView(v);
+export default function Buttons({
+  onClickEvent,
+  moveCameraTo,
+  currentObject,
+  ...props
+}) {
+  const handleClick = (id) => {
+    const view = getView(id);
     if (!view) return;
 
-    const { position, target } = view;
-    moveCameraTo({ position, target });
-    onClickEvent(v);
+    const { cameraPosition, target } = view;
+    moveCameraTo({ cameraPosition, target });
+    onClickEvent(id);
   };
+
+  const buttonIsActive = (id) => currentObject?.id === id;
 
   return (
     <group {...props} dispose={null}>
-      <Html wrapperClass="label" distanceFactor={50} position={[30, 5, -5]}>
-        <button onClick={() => handleClick("factory")}>Usine</button>
-      </Html>
+      {views?.map(({ id, position }) => {
+        // On n'affiche pas le bouton pour la vue initiale
+        if (id === "view0") return null;
 
-      <Html wrapperClass="label" distanceFactor={30} position={[-10, 0, 15]}>
-        <button onClick={() => handleClick("parking")}>Parking</button>
-      </Html>
+        return (
+          <Html
+            key={`button-${id}`}
+            wrapperClass="label"
+            distanceFactor={50}
+            position={position}
+          >
+            <button
+              className={`focus-button ${buttonIsActive(id) ? "active" : ""}`}
+              onClick={() => handleClick(id)}
+            />
+          </Html>
+        );
+      })}
     </group>
   );
 }
