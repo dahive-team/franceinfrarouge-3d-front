@@ -15,8 +15,8 @@ const Camera = forwardRef((props, ref) => {
   const toTarget = useRef(new Vector3());
   const currentTarget = useRef(new Vector3());
 
-  const basePos = useRef(new Vector3()); // position finale sans sway
-  const duration = 1.5;
+  const basePos = useRef(new Vector3(-20, 10, 20)); // position finale sans sway
+  const duration = 1.8;
   const startTime = useRef(0);
   const isTransitioning = useRef(false);
 

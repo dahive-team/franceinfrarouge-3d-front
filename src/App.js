@@ -9,6 +9,7 @@ import Experience from "./Experience";
 export default function App() {
   const scrollContainerRef = useRef(null);
   const scrollCooldown = useRef(false);
+  const sidebarRef = useRef(null);
   const [view, setView] = useState(null);
   const handleSelectView = (v) => {
     setView(v);
@@ -27,6 +28,9 @@ export default function App() {
     if (!container) return;
 
     const handleScroll = (e) => {
+      // Si on scroll dans la sidebar, on ne fait rien
+      if (sidebarRef.current?.contains(e.target)) return;
+      // Si scrollCooldown est actif, on ignore l'événement
       if (scrollCooldown.current) return;
 
       const delta = e.deltaY;
@@ -69,7 +73,7 @@ export default function App() {
             fov: 45,
             near: 0.1,
             far: 200,
-            position: [-20, 40, 70],
+            position: [-20, 10, 20],
           }}
         >
           <Experience
@@ -79,6 +83,7 @@ export default function App() {
           />
         </Canvas>
         <aside
+          ref={sidebarRef}
           data-lenis-prevent
           className={`journey-sidebar ${
             viewContent?.triggerSidebar ? "show" : ""

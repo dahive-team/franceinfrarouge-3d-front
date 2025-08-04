@@ -1,5 +1,5 @@
 import { useEffect, useRef, Suspense } from "react";
-import { SoftShadows, Sky } from "@react-three/drei";
+import { SoftShadows, Sky, PositionalAudio } from "@react-three/drei";
 // import { useControls } from "leva";
 // import { Perf } from "r3f-perf";
 
@@ -7,7 +7,8 @@ import { getView } from "./content";
 
 import Factory from "./Factory";
 import Buttons from "./Buttons";
-import Camera from "./Camera"; // Import the camera component
+import Camera from "./Camera";
+import Sound from "./Sound";
 
 export default function Experience({ objectToView, handleSelectView }) {
   const groupRef = useRef(null);
@@ -20,6 +21,7 @@ export default function Experience({ objectToView, handleSelectView }) {
     }
   };
 
+  // Position en view 0 une seconde après le chargement de la scène
   useEffect(() => {
     setTimeout(() => {
       const initialView = getView("view0");
@@ -63,14 +65,14 @@ export default function Experience({ objectToView, handleSelectView }) {
           {/* <Camera /> */}
           <Factory
             scale={0.4}
-            position={[4, -1, 2]}
-            onClickEvent={handleSelectView}
+            // onClickEvent={handleSelectView}
           />
           <Buttons
             onClickEvent={handleSelectView}
             moveCameraTo={moveCameraTo}
             currentObject={objectToView}
           />
+          <Sound url="/sounds/birds.mp3" position={[-60, 20, 20]} />
         </Suspense>
       </group>
     </>
