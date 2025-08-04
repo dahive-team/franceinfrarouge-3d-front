@@ -8,9 +8,9 @@ import { getView } from "./content";
 import Factory from "./Factory";
 import Buttons from "./Buttons";
 import Camera from "./Camera";
-import Sound from "./Sound";
+import Sounds from "./Sounds";
 
-export default function Experience({ objectToView, handleSelectView }) {
+export default function Experience({ objectToView, handleSelectView, muted }) {
   const groupRef = useRef(null);
   const cameraRef = useRef(null);
 
@@ -72,7 +72,7 @@ export default function Experience({ objectToView, handleSelectView }) {
             moveCameraTo={moveCameraTo}
             currentObject={objectToView}
           />
-          <Sound url="/sounds/birds.mp3" position={[-60, 20, 20]} />
+          <Sounds muted={muted} />
         </Suspense>
       </group>
     </>

@@ -11,6 +11,7 @@ export default function App() {
   const scrollCooldown = useRef(false);
   const sidebarRef = useRef(null);
   const [view, setView] = useState(null);
+  const [muted, setMuted] = useState(true);
   const handleSelectView = (v) => {
     setView(v);
   };
@@ -55,6 +56,10 @@ export default function App() {
     };
   }, [viewContent, nextView, prevView]);
 
+  const handleMute = () => {
+    setMuted((prev) => !prev);
+  };
+
   return (
     <>
       <ReactLenis root />
@@ -80,6 +85,7 @@ export default function App() {
             objectToView={viewContent}
             handleSelectView={handleSelectView}
             sidebarIsHidden={viewContent === null}
+            muted={muted}
           />
         </Canvas>
         <aside
@@ -114,6 +120,9 @@ export default function App() {
             )}
           </div>
         </aside>
+        <button className="journey-mute-button" onClick={handleMute}>
+          {muted ? "🔊 Activer le son" : "🔇 Désactiver le son"}
+        </button>
       </section>
     </>
   );

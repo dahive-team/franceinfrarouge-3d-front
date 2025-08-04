@@ -8,6 +8,7 @@ export const views = [
     cameraPosition: [-60, 20, 20],
     target: [0, 0, 0],
     triggerSidebar: false,
+    sound: "/sounds/birds.mp3",
   },
   {
     id: "view1",
@@ -20,6 +21,7 @@ export const views = [
     cameraPosition: [-20, 20, 15],
     target: [20, 5, 0],
     triggerSidebar: true,
+    sound: "/sounds/factory.mp3",
   },
   {
     id: "view2",
