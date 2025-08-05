@@ -88,38 +88,38 @@ export default function App() {
             muted={muted}
           />
         </Canvas>
-        <aside
-          ref={sidebarRef}
-          data-lenis-prevent
-          className={`journey-sidebar ${
+        <div
+          className={`journey-sidebar-wrapper ${
             viewContent?.triggerSidebar ? "show" : ""
           }`}
         >
-          <button className="closeSidebar" onClick={handleCloseSidebar} />
-          <h1>{viewContent?.title}</h1>
-          <p>{viewContent?.description}</p>
-          {viewContent?.image && (
-            <img src={viewContent?.image} alt={viewContent?.title} />
-          )}
-          <div className="prevNextButtons">
+          <div className="journey-prev-next-buttons">
             {prevView && (
               <button
                 className="prev"
                 onClick={() => handleSelectView(prevView?.id)}
-              >
-                Précédent
-              </button>
+              />
             )}
             {nextView && (
               <button
                 className="next"
                 onClick={() => handleSelectView(nextView?.id)}
-              >
-                Suivant
-              </button>
+              />
             )}
           </div>
-        </aside>
+          <aside
+            ref={sidebarRef}
+            data-lenis-prevent
+            className="journey-sidebar"
+          >
+            <button className="closeSidebar" onClick={handleCloseSidebar} />
+            <h1>{viewContent?.title}</h1>
+            <p>{viewContent?.description}</p>
+            {viewContent?.image && (
+              <img src={viewContent?.image} alt={viewContent?.title} />
+            )}
+          </aside>
+        </div>
         <button className="journey-mute-button" onClick={handleMute}>
           {muted ? "🔊 Activer le son" : "🔇 Désactiver le son"}
         </button>
