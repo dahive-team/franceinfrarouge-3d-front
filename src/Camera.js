@@ -1,14 +1,15 @@
 import { useThree, useFrame } from "@react-three/fiber";
-import { useImperativeHandle, useRef, forwardRef } from "react";
-import { Vector3 } from "three";
+import { useImperativeHandle, useEffect, useRef, forwardRef } from "react";
+import { Vector2, Vector3 } from "three";
 
 function easeInOutCubic(t) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
 const Camera = forwardRef((props, ref) => {
-  const { camera, mouse, clock } = useThree();
+  const { camera, clock } = useThree();
 
+  const mouse = useRef(new Vector2());
   const fromPos = useRef(new Vector3());
   const toPos = useRef(new Vector3());
   const fromTarget = useRef(new Vector3());
@@ -20,6 +21,16 @@ const Camera = forwardRef((props, ref) => {
   const startTime = useRef(0);
   const isTransitioning = useRef(false);
 
+  useEffect(() => {
+    const onMove = (e) => {
+      // normalisation comme Three.js : x,y ∈ [−1,1]
+      mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener("pointermove", onMove);
+    return () => window.removeEventListener("pointermove", onMove);
+  }, []);
+
   useFrame(() => {
     const elapsed = clock.getElapsedTime() - startTime.current;
     const t = Math.min(elapsed / duration, 1);
@@ -27,7 +38,11 @@ const Camera = forwardRef((props, ref) => {
 
     // sway à appliquer à chaque frame (même pendant la transition)
     const swayStrength = 2;
-    const sway = new Vector3(0, mouse.y * swayStrength, mouse.x * swayStrength);
+    const sway = new Vector3(
+      0,
+      mouse.current.y * swayStrength,
+      mouse.current.x * swayStrength
+    );
 
     let targetPos = new Vector3();
 

@@ -21,7 +21,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
     }
   };
 
-  // Position en view 0 une seconde après le chargement de la scène
+  // Position en view0 une seconde après le chargement de la scène
   useEffect(() => {
     setTimeout(() => {
       const initialView = getView("view0");
@@ -38,13 +38,6 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
     <>
       {/* {showPerf && <Perf position="top-left" />} */}
 
-      {/* <CameraControls
-        ref={cameraRef}
-        target={[0, 10, 0]}
-        minDistance={15}
-        maxDistance={60}
-        maxPolarAngle={Math.PI / 2}
-      /> */}
       <Camera ref={cameraRef} />
       <SoftShadows size={25} samples={10} focus={0} />
       <Sky
@@ -62,7 +55,6 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
       <ambientLight intensity={1.5} />
       <group ref={groupRef}>
         <Suspense fallback={null}>
-          {/* <Camera /> */}
           <Factory
             scale={0.4}
             // onClickEvent={handleSelectView}

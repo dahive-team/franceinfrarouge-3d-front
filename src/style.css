@@ -168,7 +168,6 @@ button:hover {
   padding: 2rem;
   margin-top: 0;
   clip-path: inset(0 round 20px);
-  overflow-y: scroll;
   overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: black #f0f0f0;

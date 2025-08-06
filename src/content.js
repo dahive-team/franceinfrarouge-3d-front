@@ -34,6 +34,7 @@ export const views = [
     cameraPosition: [-6, 2, -10],
     target: [0, -3, -35],
     triggerSidebar: true,
+    sound: "/sounds/birds.mp3",
   },
   {
     id: "view3",
@@ -45,6 +46,7 @@ export const views = [
     cameraPosition: [-41, 5, 2],
     target: [0, -30, 65],
     triggerSidebar: true,
+    sound: "/sounds/parking.mp3",
   },
   {
     id: "view4",
@@ -57,6 +59,7 @@ export const views = [
     cameraPosition: [-6, 5, 0],
     target: [-10, 5, -10],
     triggerSidebar: true,
+    sound: "/sounds/office.mp3",
   },
   {
     id: "view5",
@@ -69,6 +72,7 @@ export const views = [
     cameraPosition: [2, 8, 33],
     target: [40, -5, 0],
     triggerSidebar: true,
+    sound: "/sounds/gas-pipe.mp3",
   },
   {
     id: "view6",
@@ -81,6 +85,7 @@ export const views = [
     cameraPosition: [-20, 20, 15],
     target: [20, 5, 0],
     triggerSidebar: true,
+    sound: "/sounds/factory.mp3",
   },
   {
     id: "view7",
@@ -93,6 +98,7 @@ export const views = [
     cameraPosition: [-35, 10, 10],
     target: [-10, -10, 85],
     triggerSidebar: true,
+    sound: "/sounds/birds.mp3",
   },
   {
     id: "view8",
@@ -105,6 +111,7 @@ export const views = [
     cameraPosition: [-35, 10, 10],
     target: [-10, -10, 85],
     triggerSidebar: true,
+    sound: "/sounds/birds.mp3",
   },
 ];
 
