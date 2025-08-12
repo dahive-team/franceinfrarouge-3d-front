@@ -1,5 +1,6 @@
 import { Html } from "@react-three/drei";
-
+import { motion } from "framer-motion-3d";
+import { m } from "framer-motion";
 import { views, getView } from "./content";
 
 export default function Buttons({
@@ -11,7 +12,6 @@ export default function Buttons({
   const handleClick = (id) => {
     const view = getView(id);
     if (!view) return;
-
     const { cameraPosition, target } = view;
     moveCameraTo({ cameraPosition, target });
     onClickEvent(id);
@@ -19,26 +19,39 @@ export default function Buttons({
 
   const buttonIsActive = (id) => currentObject?.id === id;
 
+  // on exclut "view0" et on garde l'index pour le delay
+  const items = views.filter((v) => v.id !== "view0");
+
   return (
     <group {...props} dispose={null}>
-      {views?.map(({ id, position }) => {
-        // On n'affiche pas le bouton pour la vue initiale
-        if (id === "view0") return null;
-
-        return (
+      {items.map(({ id, position }, i) => (
+        <motion.mesh
+          initial={{ scale: 0.1 }}
+          animate={{ scale: 1 }}
+          transition={{
+            type: "spring",
+            delay: 2.2 + i * 0.08,
+          }}
+        >
           <Html
             key={`button-${id}`}
             wrapperClass="label"
             distanceFactor={50}
             position={position}
           >
-            <button
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                type: "spring",
+                delay: 2.5 + i * 0.08,
+              }}
               className={`focus-button ${buttonIsActive(id) ? "active" : ""}`}
               onClick={() => handleClick(id)}
             />
           </Html>
-        );
-      })}
+        </motion.mesh>
+      ))}
     </group>
   );
 }

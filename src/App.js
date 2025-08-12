@@ -1,10 +1,34 @@
 import { useState, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { ReactLenis } from "lenis/react";
+import { LazyMotion, m } from "framer-motion";
 
 import { views, getView, getPrevNextView } from "./content";
 
 import Experience from "./Experience";
+import SideBar from "./SideBar.js";
+const loadDomMax = () => import("../lib/motion.js").then((res) => res.default);
+
+const ulVariants = {
+  rest: { opacity: 0, y: 20 },
+  enter: {
+    opacity: 1,
+    y: 0,
+    transition: { delay: 3.2, type: "spring", stiffness: 150, damping: 24 },
+  },
+  hover: {
+    transition: { staggerChildren: 0.08 },
+  },
+};
+
+const liVariants = {
+  rest: { opacity: 0, y: 12 },
+  hover: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 150, damping: 24 },
+  },
+};
 
 export default function App() {
   const scrollContainerRef = useRef(null);
@@ -12,15 +36,13 @@ export default function App() {
   const sidebarRef = useRef(null);
   const [view, setView] = useState(null);
   const [muted, setMuted] = useState(true);
+
   const handleSelectView = (v) => {
     setView(v);
   };
 
   const viewContent = getView(view) || null;
 
-  const handleCloseSidebar = () => {
-    setView("view0");
-  };
   const { prevView, nextView } = getPrevNextView(viewContent?.id) || {};
   const buttonIsActive = (id) => viewContent?.id === id;
 
@@ -61,16 +83,26 @@ export default function App() {
   };
 
   return (
-    <>
+    <LazyMotion features={loadDomMax} strict>
       <ReactLenis root />
       <section ref={scrollContainerRef} className="scrollContainer">
-        <ul className="journey-buttons">
+        <m.ul
+          className="journey-buttons"
+          variants={ulVariants}
+          initial="rest"
+          animate="enter"
+          whileHover="hover"
+        >
           {views?.map(({ id, title }) => (
-            <li key={id} className={buttonIsActive(id) ? "isActive" : ""}>
+            <m.li
+              key={id}
+              className={buttonIsActive(id) ? "isActive" : ""}
+              variants={liVariants}
+            >
               <button onClick={() => handleSelectView(id)}>{title}</button>
-            </li>
+            </m.li>
           ))}
-        </ul>
+        </m.ul>
         <Canvas
           shadows
           className="canvas"
@@ -88,42 +120,28 @@ export default function App() {
             muted={muted}
           />
         </Canvas>
-        <div
-          className={`journey-sidebar-wrapper ${
-            viewContent?.triggerSidebar ? "show" : ""
-          }`}
+        <SideBar
+          sidebarRef={sidebarRef}
+          handleSelectView={handleSelectView}
+          prevView={prevView}
+          nextView={nextView}
+          view={view}
+        />
+        <m.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            type: "spring",
+            stiffness: 150,
+            damping: 24,
+            delay: 3.7,
+          }}
+          className="journey-mute-button"
+          onClick={handleMute}
         >
-          <div className="journey-prev-next-buttons">
-            {prevView && (
-              <button
-                className="prev"
-                onClick={() => handleSelectView(prevView?.id)}
-              />
-            )}
-            {nextView && (
-              <button
-                className="next"
-                onClick={() => handleSelectView(nextView?.id)}
-              />
-            )}
-          </div>
-          <aside
-            ref={sidebarRef}
-            data-lenis-prevent
-            className="journey-sidebar"
-          >
-            <button className="closeSidebar" onClick={handleCloseSidebar} />
-            <h1>{viewContent?.title}</h1>
-            <p>{viewContent?.description}</p>
-            {viewContent?.image && (
-              <img src={viewContent?.image} alt={viewContent?.title} />
-            )}
-          </aside>
-        </div>
-        <button className="journey-mute-button" onClick={handleMute}>
           {muted ? "🔊 Activer le son" : "🔇 Désactiver le son"}
-        </button>
+        </m.button>
       </section>
-    </>
+    </LazyMotion>
   );
 }
