@@ -3,11 +3,12 @@ import { Canvas } from "@react-three/fiber";
 import { ReactLenis } from "lenis/react";
 import { LazyMotion, m } from "framer-motion";
 
-import { views, getView, getPrevNextView } from "./content";
+import { views, getView, getPrevNextView } from "./content.js";
 
-import Experience from "./Experience";
-import SideBar from "./SideBar.js";
-const loadDomMax = () => import("../lib/motion.js").then((res) => res.default);
+import Experience from "./Experience.jsx";
+import SideBar from "./SideBar.jsx";
+const loadDomAnimations = () =>
+  import("../lib/motion.js").then((res) => res.default);
 
 const ulVariants = {
   rest: { opacity: 0, y: 20 },
@@ -83,10 +84,10 @@ export default function App() {
   };
 
   return (
-    <LazyMotion features={loadDomMax} strict>
+    <LazyMotion features={loadDomAnimations} strict>
       <ReactLenis root />
       <section ref={scrollContainerRef} className="scrollContainer">
-        <m.ul
+        {/* <m.ul
           className="journey-buttons"
           variants={ulVariants}
           initial="rest"
@@ -102,9 +103,10 @@ export default function App() {
               <button onClick={() => handleSelectView(id)}>{title}</button>
             </m.li>
           ))}
-        </m.ul>
+        </m.ul> */}
         <Canvas
-          shadows
+          dpr={[1, 1.5]}
+          shadows={false}
           className="canvas"
           camera={{
             fov: 45,

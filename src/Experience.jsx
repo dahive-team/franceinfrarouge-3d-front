@@ -1,7 +1,7 @@
 import { useEffect, useRef, Suspense } from "react";
-import { SoftShadows, Sky, PositionalAudio } from "@react-three/drei";
+import { SoftShadows, Sky } from "@react-three/drei";
 // import { useControls } from "leva";
-// import { Perf } from "r3f-perf";
+import { Perf } from "r3f-perf";
 
 import { getView } from "./content";
 
@@ -36,7 +36,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
 
   return (
     <>
-      {/* {showPerf && <Perf position="top-left" />} */}
+      <Perf position="top-left" />
 
       <Camera ref={cameraRef} />
       <SoftShadows size={25} samples={10} focus={0} />

@@ -1,6 +1,4 @@
 import { Html } from "@react-three/drei";
-import { motion } from "framer-motion-3d";
-import { m } from "framer-motion";
 import { views, getView } from "./content";
 
 export default function Buttons({
@@ -25,32 +23,14 @@ export default function Buttons({
   return (
     <group {...props} dispose={null}>
       {items.map(({ id, position }, i) => (
-        <motion.mesh
-          initial={{ scale: 0.1 }}
-          animate={{ scale: 1 }}
-          transition={{
-            type: "spring",
-            delay: 2.2 + i * 0.08,
-          }}
-        >
-          <Html
-            key={`button-${id}`}
-            wrapperClass="label"
-            distanceFactor={50}
-            position={position}
-          >
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                type: "spring",
-                delay: 2.5 + i * 0.08,
-              }}
+        <mesh key={`button-${id}`}>
+          <Html wrapperClass="label" distanceFactor={50} position={position}>
+            <button
               className={`focus-button ${buttonIsActive(id) ? "active" : ""}`}
               onClick={() => handleClick(id)}
             />
           </Html>
-        </motion.mesh>
+        </mesh>
       ))}
     </group>
   );
