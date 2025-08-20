@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { AudioContext } from "three";
 import { Canvas } from "@react-three/fiber";
 import { ReactLenis } from "lenis/react";
 import { LazyMotion, m } from "framer-motion";
@@ -45,7 +46,6 @@ export default function App() {
   const viewContent = getView(view) || null;
 
   const { prevView, nextView } = getPrevNextView(viewContent?.id) || {};
-  const buttonIsActive = (id) => viewContent?.id === id;
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -80,7 +80,16 @@ export default function App() {
   }, [viewContent, nextView, prevView]);
 
   const handleMute = () => {
-    setMuted((prev) => !prev);
+    setMuted((prev) => {
+      const newMuted = !prev;
+
+      const ctx = AudioContext.getContext();
+      if (ctx && ctx.state === "suspended") {
+        ctx.resume();
+      }
+
+      return newMuted;
+    });
   };
 
   return (

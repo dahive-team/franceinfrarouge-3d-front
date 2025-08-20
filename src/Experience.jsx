@@ -1,7 +1,7 @@
 import { useEffect, useRef, Suspense } from "react";
 import { SoftShadows, Sky } from "@react-three/drei";
 // import { useControls } from "leva";
-import { Perf } from "r3f-perf";
+// import { Perf } from "r3f-perf";
 
 import { getView } from "./content";
 
@@ -36,7 +36,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
 
   return (
     <>
-      <Perf position="top-left" />
+      {/* <Perf position="top-left" /> */}
 
       <Camera ref={cameraRef} />
       <SoftShadows size={25} samples={10} focus={0} />
@@ -55,10 +55,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
       <ambientLight intensity={1.5} />
       <group ref={groupRef}>
         <Suspense fallback={null}>
-          <Factory
-            scale={0.4}
-            // onClickEvent={handleSelectView}
-          />
+          <Factory scale={0.4} />
           <Buttons
             onClickEvent={handleSelectView}
             moveCameraTo={moveCameraTo}
