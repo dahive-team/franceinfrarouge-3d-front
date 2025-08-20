@@ -44,6 +44,7 @@ export default function App() {
   };
 
   const viewContent = getView(view) || null;
+  const buttonIsActive = (id) => viewContent?.id === id;
 
   const { prevView, nextView } = getPrevNextView(viewContent?.id) || {};
 
