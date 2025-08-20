@@ -96,7 +96,7 @@ export default function App() {
     <LazyMotion features={loadDomAnimations} strict>
       <ReactLenis root />
       <section ref={scrollContainerRef} className="scrollContainer">
-        {/* <m.ul
+        <m.ul
           className="journey-buttons"
           variants={ulVariants}
           initial="rest"
@@ -112,7 +112,7 @@ export default function App() {
               <button onClick={() => handleSelectView(id)}>{title}</button>
             </m.li>
           ))}
-        </m.ul> */}
+        </m.ul>
         <Canvas
           dpr={[1, 1.5]}
           shadows={false}
