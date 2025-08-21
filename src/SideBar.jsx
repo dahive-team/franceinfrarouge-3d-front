@@ -54,12 +54,14 @@ export default function SideBar({
               data-lenis-prevent
               className="journey-sidebar"
             >
-              <button className="closeSidebar" onClick={handleCloseSidebar} />
-              <h1>{viewContent?.title}</h1>
-              <p>{viewContent?.description}</p>
               {viewContent?.image && (
                 <img src={viewContent?.image} alt={viewContent?.title} />
               )}
+              <div className="journey-sidebar-texts">
+                <button className="closeSidebar" onClick={handleCloseSidebar} />
+                <h1>{viewContent?.title}</h1>
+                <p>{viewContent?.description}</p>
+              </div>
             </m.aside>
           )}
         </AnimatePresence>

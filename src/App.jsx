@@ -16,7 +16,7 @@ const ulVariants = {
   enter: {
     opacity: 1,
     y: 0,
-    transition: { delay: 3.2, type: "spring", stiffness: 150, damping: 24 },
+    transition: { delay: 2.3, type: "spring", stiffness: 150, damping: 24 },
   },
   hover: {
     transition: { staggerChildren: 0.08 },
@@ -146,7 +146,7 @@ export default function App() {
             type: "spring",
             stiffness: 150,
             damping: 24,
-            delay: 3.7,
+            delay: 2.7,
           }}
           className="journey-mute-button"
           onClick={handleMute}
