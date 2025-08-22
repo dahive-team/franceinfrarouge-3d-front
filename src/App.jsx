@@ -23,6 +23,23 @@ const ulVariants = {
   },
 };
 
+const iconVariants = {
+  rest: { opacity: 1, y: 0 },
+  enter: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      opacity: { delay: 0.15, duration: 0.2 },
+      y: { delay: 0.15, type: "spring", stiffness: 150, damping: 24 },
+    },
+  },
+  hover: {
+    opacity: 0,
+    y: -10,
+    transition: { type: "spring", stiffness: 150, damping: 24 },
+  },
+};
+
 const liVariants = {
   rest: { opacity: 0, y: 12 },
   hover: {
@@ -104,6 +121,12 @@ export default function App() {
           animate="enter"
           whileHover="hover"
         >
+          <m.img
+            variants={iconVariants}
+            src="/path.svg"
+            className="journey-icon"
+            alt="Path icon"
+          />
           {views?.map(({ id, title }) => (
             <m.li
               key={id}

@@ -43,6 +43,10 @@ body,
   }
 
   li {
+    &:hover {
+      background-color: rgb(243, 243, 243);
+    }
+
     &:first-of-type {
       button {
         padding-top: 1.5rem;
@@ -61,13 +65,19 @@ body,
         color: white;
       }
     }
+  }
 
-    button {
-      width: 100%;
-    }
+  .journey-icon {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    width: 2rem;
+    height: 2rem;
   }
 
   button {
+    width: 100%;
+    text-align: left;
     cursor: pointer;
     background-color: transparent;
     border: 0;
@@ -97,18 +107,19 @@ body,
   font-weight: bold;
   line-height: 1.3;
   cursor: pointer;
-  transition: scale 0.2s ease-out;
 }
 
 .focus-button.active {
   scale: 0.5;
 }
 
-button {
+.focus-button,
+.journey-prev-next-buttons button {
   transition: scale 0.2s ease-out;
 }
 
-button:hover {
+.focus-button:hover,
+.journey-prev-next-buttons button:hover {
   scale: 1.2;
 }
 
@@ -175,26 +186,37 @@ button:hover {
   transition: right 0.4s ease-out;
 }
 
+.journey-sidebar img {
+  width: 100%;
+  height: 10rem;
+  object-fit: cover;
+}
+
 .journey-sidebar-texts {
   padding: 2rem;
 }
 
 .journey-sidebar h1 {
   font-size: 2rem;
+  line-height: 1;
   margin-top: 0;
+  margin-bottom: 0;
 }
 
 .journey-sidebar p {
-  font-size: clamp(1rem, 1vw, 1.2rem);
+  font-size: clamp(1rem, 1vw, 1.1rem);
   line-height: 1.3;
   color: rgb(84, 84, 84);
   word-wrap: break-word;
 }
 
-.journey-sidebar img {
-  width: 100%;
-  height: 10rem;
-  object-fit: cover;
+.journey-sidebar-link {
+  display: inline-flex;
+  background-color: black;
+  padding: 1rem 2rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
 }
 
 .closeSidebar {

@@ -61,6 +61,14 @@ export default function SideBar({
                 <button className="closeSidebar" onClick={handleCloseSidebar} />
                 <h1>{viewContent?.title}</h1>
                 <p>{viewContent?.description}</p>
+                <a
+                  href={viewContent?.link}
+                  className="journey-sidebar-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Découvrez nos solutions dédiées
+                </a>
               </div>
             </m.aside>
           )}
