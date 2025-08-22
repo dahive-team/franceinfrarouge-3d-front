@@ -95,30 +95,69 @@ body,
 }
 
 .focus-button {
-  background-color: white;
-  border: 0;
-  color: black;
-  width: max-content;
+  --ring: 79, 70, 229;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.1rem;
   width: 3rem;
   height: 3rem;
   border-radius: 50px;
-  user-select: none;
-  font-size: 1.2rem;
-  font-weight: bold;
-  line-height: 1.3;
+  font: 600 16px/1.2 system-ui, sans-serif;
+  background: rgba(255, 255, 255, 0.463);
+  border: 0;
   cursor: pointer;
+  transform: translateZ(0);
+  transition: background-color 0.2s ease-out, scale 0.2s ease-out,
+    opacity 0.2s ease-out;
+  animation: btn-breathe 5s ease-in-out infinite;
+}
+
+.focus-button:after {
+  content: "";
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50px;
+  background-color: white;
+  transition: background-color 0.2s ease-out, scale 0.2s ease-out;
+}
+
+.focus-button:hover {
+  scale: 1.2;
+  background-color: white;
 }
 
 .focus-button.active {
+  opacity: 0;
+}
+
+.focus-button:hover:after,
+.focus-button.active:after {
+  background-color: black;
   scale: 0.5;
 }
 
-.focus-button,
+@keyframes btn-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+}
+
+/* .focus-button, */
 .journey-prev-next-buttons button {
   transition: scale 0.2s ease-out;
 }
 
-.focus-button:hover,
+/* .focus-button:hover, */
 .journey-prev-next-buttons button:hover {
   scale: 1.2;
 }
