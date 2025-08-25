@@ -43,6 +43,8 @@ body,
   }
 
   li {
+    transition: background-color 0.2s ease-out;
+
     &:hover {
       background-color: rgb(243, 243, 243);
     }
