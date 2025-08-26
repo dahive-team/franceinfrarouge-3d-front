@@ -8,6 +8,7 @@ import { views, getView, getPrevNextView } from "./content.js";
 
 import Experience from "./Experience.jsx";
 import SideBar from "./SideBar.jsx";
+import MuteButton from "./MuteButton.jsx";
 const loadDomAnimations = () =>
   import("../lib/motion.js").then((res) => res.default);
 
@@ -162,7 +163,7 @@ export default function App() {
           nextView={nextView}
           view={view}
         />
-        <m.button
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
@@ -171,11 +172,9 @@ export default function App() {
             damping: 24,
             delay: 2.7,
           }}
-          className="journey-mute-button"
-          onClick={handleMute}
         >
-          {muted ? "🔊 Activer le son" : "🔇 Désactiver le son"}
-        </m.button>
+          <MuteButton muted={muted} handleMute={handleMute} />
+        </m.div>
       </section>
     </LazyMotion>
   );

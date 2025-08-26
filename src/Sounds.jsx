@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import { AudioLoader, AudioListener, Object3D, PositionalAudio } from "three";
-
 import { views } from "./content";
 
 export default function Sounds({
@@ -13,44 +12,13 @@ export default function Sounds({
   const { camera } = useThree();
   const groupRef = useRef();
   const listenerRef = useRef();
-  const audioNodes = useRef(new Map()); // id -> { audio, obj3d, playing }
-  const buffersRef = useRef(new Map()); // id -> AudioBuffer
+  const audioNodes = useRef(new Map()); // id -> { audio, obj3d, url, playing, loading }
   const loader = useMemo(() => new AudioLoader(), []);
-  const [ready, setReady] = useState(false);
   const MIN = 0.0001;
+  const idxById = useRef(new Map(views.map((v) => [v.id, v]))); // pour retrouver url/pos par id
 
-  // 1) Précharger tous les buffers (une seule fois)
+  // 1) Créer listener + un PositionalAudio par view (sans buffer)
   useEffect(() => {
-    let cancelled = false;
-    const promises = views
-      .filter((v) => v.sound)
-      .map(
-        (v) =>
-          new Promise((resolve, reject) => {
-            loader.load(
-              v.sound,
-              (buf) => resolve([v.id, buf]),
-              undefined,
-              reject
-            );
-          })
-      );
-
-    Promise.all(promises).then((pairs) => {
-      if (cancelled) return;
-      pairs.forEach(([id, buf]) => buffersRef.current.set(id, buf));
-      setReady(true); // 🔑 déclenche la suite
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [loader]);
-
-  // 2) Créer le listener + un PositionalAudio par view (quand ready = true)
-  useEffect(() => {
-    if (!ready) return;
-
     const listener = new AudioListener();
     camera.add(listener);
     listenerRef.current = listener;
@@ -64,16 +32,16 @@ export default function Sounds({
       const audio = new PositionalAudio(listener);
       audio.setLoop(true);
       audio.setRefDistance(2);
-
-      const buf = buffersRef.current.get(id);
-      if (buf) audio.setBuffer(buf);
-
-      // 🟢 éviter les pops : gain à MIN au départ
-      const g = audio.gain.gain;
-      g.setValueAtTime(MIN, audio.context.currentTime);
+      audio.gain.gain.setValueAtTime(MIN, audio.context.currentTime); // éviter pops
 
       obj.add(audio);
-      audioNodes.current.set(id, { audio, obj3d: obj, playing: false });
+      audioNodes.current.set(id, {
+        audio,
+        obj3d: obj,
+        url: sound,
+        playing: false,
+        loading: false,
+      });
       groupRef.current.add(obj);
     });
 
@@ -85,16 +53,12 @@ export default function Sounds({
       audioNodes.current.clear();
       camera.remove(listener);
     };
-  }, [ready, camera]);
+  }, [camera]);
 
-  // 3) Mute/unmute global — FADE
+  // 2) Mute/unmute global (fade léger)
   useEffect(() => {
-    if (!ready) return;
-
     for (const node of audioNodes.current.values()) {
       const a = node.audio;
-      if (!a.buffer) continue;
-
       const g = a.gain.gain;
       const now = a.context.currentTime;
 
@@ -102,35 +66,35 @@ export default function Sounds({
       g.setValueAtTime(Math.max(g.value, MIN), now);
 
       if (muted) {
-        // Fade-out puis stop
         g.exponentialRampToValueAtTime(MIN, now + fadeOut);
         setTimeout(() => a.stop(), (fadeOut + 0.05) * 1000);
         node.playing = false;
       } else {
-        // On ne démarre pas tout de suite toutes les sources :
-        // la boucle useFrame se charge d’allumer seulement les plus proches.
-        // On remet juste le gain à MIN : la lecture démarrera en douceur dans la boucle.
+        // on laisse la boucle décider quoi jouer; on met juste le gain bas
         g.setValueAtTime(MIN, now);
       }
     }
-  }, [muted, ready, fadeOut]);
+  }, [muted, fadeOut]);
 
-  // 4) Ne garder actifs que les N plus proches (toutes les ~250ms)
+  // 3) Virtualisation : activer seulement les N plus proches,
+  //    et charger le buffer "à la demande" si nécessaire.
   const acc = useRef(0);
   useFrame((_, dt) => {
-    if (!ready || muted) return;
     acc.current += dt;
     if (acc.current < 0.25) return;
     acc.current = 0;
 
+    if (muted) return;
+
+    // calcule les distances
     const sorted = views
       .filter((v) => v.sound)
       .map((v) => {
-        const node = audioNodes.current.get(v.id);
-        return node
+        const n = audioNodes.current.get(v.id);
+        return n
           ? {
               id: v.id,
-              d2: camera.position.distanceToSquared(node.obj3d.position),
+              d2: camera.position.distanceToSquared(n.obj3d.position),
             }
           : null;
       })
@@ -140,25 +104,47 @@ export default function Sounds({
     const keep = new Set(sorted.slice(0, maxActive).map((s) => s.id));
 
     for (const [id, node] of audioNodes.current.entries()) {
-      if (!node.audio.buffer) continue;
       const wantPlay = keep.has(id);
+      const a = node.audio;
 
-      if (wantPlay && !node.playing) {
-        // 🔊 start + petit fade-in
-        const a = node.audio;
-        const g = a.gain.gain;
-        const now = a.context.currentTime;
+      if (wantPlay) {
+        // Charger à la demande si pas de buffer et pas déjà en cours
+        if (!a.buffer && !node.loading) {
+          node.loading = true;
+          const url = node.url ?? idxById.current.get(id)?.sound;
+          if (!url) continue;
 
-        g.cancelScheduledValues(now);
-        g.setValueAtTime(MIN, now);
-        a.play();
-        g.exponentialRampToValueAtTime(1.0, now + fadeIn);
+          loader.load(url, (buf) => {
+            a.setBuffer(buf);
+            node.loading = false;
 
-        node.playing = true;
-      } else if (!wantPlay && node.playing) {
-        // stop immédiat (on laisse la virtualisation simple comme avant)
-        node.audio.stop();
-        node.playing = false;
+            // si toujours à jouer, on lance avec petit fade-in
+            if (!muted && keep.has(id) && !node.playing) {
+              const g = a.gain.gain;
+              const now = a.context.currentTime;
+              g.cancelScheduledValues(now);
+              g.setValueAtTime(MIN, now);
+              a.play();
+              g.exponentialRampToValueAtTime(1.0, now + fadeIn);
+              node.playing = true;
+            }
+          });
+        } else if (a.buffer && !node.playing) {
+          // buffer déjà prêt : jouer
+          const g = a.gain.gain;
+          const now = a.context.currentTime;
+          g.cancelScheduledValues(now);
+          g.setValueAtTime(MIN, now);
+          a.play();
+          g.exponentialRampToValueAtTime(1.0, now + fadeIn);
+          node.playing = true;
+        }
+      } else {
+        // hors top N : stop immédiat (simple)
+        if (node.playing) {
+          a.stop();
+          node.playing = false;
+        }
       }
     }
   });
