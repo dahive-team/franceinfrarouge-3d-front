@@ -26,6 +26,7 @@ export default function Buttons({
     <group {...props} dispose={null}>
       {items.map(({ id, position }, i) => (
         <motion.mesh
+          key={`button-${id}`}
           initial={{ scale: 0.1 }}
           animate={{ scale: 1 }}
           transition={{
@@ -34,7 +35,6 @@ export default function Buttons({
           }}
         >
           <Html
-            key={`button-${id}`}
             wrapperClass="label"
             distanceFactor={50}
             position={position}

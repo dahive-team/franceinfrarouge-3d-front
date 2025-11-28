@@ -1,5 +1,5 @@
 import { useEffect, useRef, Suspense } from "react";
-import { SoftShadows, Sky } from "@react-three/drei";
+import { Sky } from "@react-three/drei";
 // import { useControls } from "leva";
 // import { Perf } from "r3f-perf";
 
@@ -39,20 +39,25 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
       {/* <Perf position="top-left" /> */}
 
       <Camera ref={cameraRef} />
-      <SoftShadows size={25} samples={10} focus={0} />
       <Sky
         distance={450000}
-        sunPosition={[0, 1, 0]}
-        inclination={0.5}
-        azimuth={0.25}
+        sunPosition={[10, 1, 10]}
       />
       <directionalLight
         castShadow
-        position={[1, 5, 3]}
-        intensity={2}
-        shadow-normalBias={0.04}
+        // shadow-bias={0.4}
+        shadow-bias={-0.05}
+        position={[10, 20, 20]}
+        intensity={3}
+        shadow-camera-top={40}
+        shadow-camera-bottom={-40}
+        shadow-camera-left={-40}
+        shadow-camera-right={40}
+        shadow-camera-near={0.1}
+        shadow-camera-far={50}
+        color={"rgba(255, 235, 200, 1)"}
       />
-      <ambientLight intensity={1.5} />
+      <ambientLight intensity={1} />
       <group ref={groupRef}>
         <Suspense fallback={null}>
           <Factory scale={0.4} />

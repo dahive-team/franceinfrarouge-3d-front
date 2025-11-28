@@ -18,7 +18,7 @@ export const views = [
     link: "https://www.franceinfrarouge.fr/solutions/solutions-de-maintenance-preventive-industrielle/",
     image:
       "https://images.unsplash.com/photo-1732375693657-e57adced90f8?auto=format&fit=crop&w=640&h=480",
-    position: [30, 5, -25],
+    position: [30, 2, -22],
     cameraPosition: [-20, 20, -15],
     target: [20, 5, -20],
     triggerSidebar: true,
@@ -69,25 +69,25 @@ export const views = [
     id: "view5",
     title: "Détection fuite de gaz",
     description:
-      "France Infra Rouge vous aide à détecter rapidement et en toute sécurité les fuites de gaz grâce aux caméras FLIR GasFindIR, distribuées en exclusivité en France, capables de localiser avec précision des gaz comme le méthane, l’ammoniac, l’éthylène ou encore le SF₆.",
+      "France Infra Rouge vous aide à détecter rapidement et en toute sécurité les fuites de gaz grâce aux caméras FLIR GasFindIR, ou aux caméras d’imagerie acoustiques FLIR Si2 capables de localiser avec précision des gaz comme le méthane, l’ammoniac, l’éthylène ou encore le SF₆.",
     link: "https://www.franceinfrarouge.fr/solutions/detection-fuite-de-gaz/",
     image:
       "https://images.unsplash.com/photo-1732375693657-e57adced90f8?auto=format&fit=crop&w=640&h=480",
     position: [20, 2, 15],
-    cameraPosition: [2, 8, 33],
-    target: [40, -5, 0],
+    cameraPosition: [12, 5, 25],
+    target: [40, -10, 0],
     triggerSidebar: true,
     sound: "/sounds/gas-pipe.mp3",
   },
   {
     id: "view6",
-    title: "Process indus",
+    title: "Process industriel",
     description:
-      "France Infra Rouge, expert en caméra thermique, propose pour les inspections automatisées l’intégration de caméras thermiques fixes dans les équipements de production, et la collecte de données afin de vérifier et d’améliorer le processus, pour que les températures ou les formes des produits en cours de production soient parfaitement conformes aux besoins spécifiques de chaque process et que la production soit homogène.",
+      "France Infra Rouge propose l’intégration de caméras thermiques dans les équipements de production, et la collecte de données afin de monitorer le processus, pour que les températures soient parfaitement conformes aux spécifications.",
     link: "https://www.franceinfrarouge.fr/solutions/process-industriel/",
     image:
       "https://images.unsplash.com/photo-1732375693657-e57adced90f8?auto=format&fit=crop&w=640&h=480",
-    position: [30, 5, -5],
+    position: [40, 5, -2],
     cameraPosition: [-20, 20, 15],
     target: [20, 5, 0],
     triggerSidebar: true,
