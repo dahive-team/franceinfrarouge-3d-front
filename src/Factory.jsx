@@ -9,8 +9,13 @@ export default function Factory({ onClickEvent, moveCameraTo, ...props }) {
   useEffect(() => {
     scene.traverse((child) => {
       if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
+        if (child.userData.addCastShadow) {
+          child.castShadow = true;
+        }
+
+        if (child.userData.addReceiveShadow) {
+          child.receiveShadow = true;
+        }
       }
     });
   }, [scene]);

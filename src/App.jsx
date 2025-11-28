@@ -139,7 +139,7 @@ export default function App() {
           ))}
         </m.ul>
         <Canvas
-          dpr={[1, 1.5]}
+          dpr={[1, 1.25]}
           shadows
           className="canvas"
           camera={{

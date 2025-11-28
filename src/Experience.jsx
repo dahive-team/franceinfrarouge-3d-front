@@ -1,7 +1,7 @@
 import { useEffect, useRef, Suspense } from "react";
 import { Sky } from "@react-three/drei";
 // import { useControls } from "leva";
-// import { Perf } from "r3f-perf";
+import { Perf } from "r3f-perf";
 
 import { getView } from "./content";
 
@@ -36,7 +36,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
 
   return (
     <>
-      {/* <Perf position="top-left" /> */}
+      <Perf position="top-center" />
 
       <Camera ref={cameraRef} />
       <Sky
@@ -55,6 +55,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
         shadow-camera-right={40}
         shadow-camera-near={0.1}
         shadow-camera-far={50}
+        shadow-mapSize={800}
         color={"rgba(255, 235, 200, 1)"}
       />
       <ambientLight intensity={1} />
