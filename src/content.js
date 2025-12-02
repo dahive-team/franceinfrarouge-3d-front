@@ -1,6 +1,10 @@
 export const views = [
   {
     id: "view0",
+    title: "< retour",
+  },
+  {
+    id: "view1",
     title: "Vue d'ensemble",
     shortTitle: "Vue d'ensemble",
     description: "",
@@ -12,7 +16,7 @@ export const views = [
     sound: "/sounds/birds.mp3",
   },
   {
-    id: "view1",
+    id: "view2",
     title: "Maintenance préventive",
     shortTitle: "Maintenance",
     description:
@@ -27,7 +31,7 @@ export const views = [
     sound: "/sounds/factory.mp3",
   },
   {
-    id: "view2",
+    id: "view3",
     title: "Prévention incendie",
     shortTitle: "Incendie",
     description:
@@ -35,14 +39,14 @@ export const views = [
     link: "https://www.franceinfrarouge.fr/solutions/securite-incendie/",
     image:
       "https://images.unsplash.com/photo-1732375693657-e57adced90f8?auto=format&fit=crop&w=640&h=480",
-    position: [5, -1, -30],
+    position: [-3, 0, -20],
     cameraPosition: [-6, 2, -10],
     target: [0, -3, -35],
     triggerSidebar: true,
     sound: "/sounds/birds.mp3",
   },
   {
-    id: "view3",
+    id: "view4",
     title: "Détection intrusion",
     shortTitle: "Intrusion",
     description:
@@ -56,7 +60,7 @@ export const views = [
     sound: "/sounds/parking.mp3",
   },
   {
-    id: "view4",
+    id: "view5",
     title: "Surveillance énérgétique des bâtiments",
     shortTitle: "Bâtiment",
     description:
@@ -71,7 +75,7 @@ export const views = [
     sound: "/sounds/office.mp3",
   },
   {
-    id: "view5",
+    id: "view6",
     title: "Détection fuite de gaz",
     shortTitle: "Fuite gaz",
     description:
@@ -86,7 +90,7 @@ export const views = [
     sound: "/sounds/gas-pipe.mp3",
   },
   {
-    id: "view6",
+    id: "view7",
     title: "Process industriel",
     shortTitle: "Production",
     description:
@@ -101,7 +105,7 @@ export const views = [
     sound: "/sounds/factory.mp3",
   },
   {
-    id: "view7",
+    id: "view8",
     title: "R&D",
     shortTitle: "R&D",
     description:
@@ -109,14 +113,14 @@ export const views = [
     link: "https://www.franceinfrarouge.fr/solutions/r-et-d/",
     image:
       "https://images.unsplash.com/photo-1732375693657-e57adced90f8?auto=format&fit=crop&w=640&h=480",
-    position: [-5, 5, 30],
+    position: [-10, 2, 30],
     cameraPosition: [-25, 7, 10],
     target: [10, -10, 85],
     triggerSidebar: true,
     sound: "/sounds/birds.mp3",
   },
   {
-    id: "view8",
+    id: "view9",
     title: "Santé",
     shortTitle: "Santé",
     description:
@@ -124,7 +128,7 @@ export const views = [
     link: "https://www.franceinfrarouge.fr/solutions/medical/",
     image:
       "https://images.unsplash.com/photo-1732375693657-e57adced90f8?auto=format&fit=crop&w=640&h=480",
-    position: [-20, 3, 30],
+    position: [-30, 5, 32],
     cameraPosition: [-35, 10, 10],
     target: [-10, -10, 85],
     triggerSidebar: true,

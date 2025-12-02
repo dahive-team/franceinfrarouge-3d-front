@@ -123,13 +123,6 @@ const Camera = forwardRef((props, ref) => {
     },
   }));
 
-  // init du repère au premier rendu
-  useEffect(() => {
-    currentTarget.current.copy(new Vector3(0, 0, 0)); // si tu as une target initiale, mets-la ici
-    recomputeSwayBasis();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return null;
 });
 

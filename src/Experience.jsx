@@ -17,18 +17,20 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
   const moveCameraTo = (view) => {
     if (cameraRef.current) {
       const { cameraPosition, target } = view;
+      if (!cameraPosition || !target) return;
+
       cameraRef.current?.setLookAt(...cameraPosition, ...target, true);
     }
   };
 
-  // Position en view0 une seconde après le chargement de la scène
-  useEffect(() => {
-    setTimeout(() => {
-      const initialView = getView("view0");
-      handleSelectView("view0");
-      moveCameraTo(initialView);
-    }, 1000);
-  }, []);
+  // Position en view1 une seconde après le chargement de la scène
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     const initialView = getView("view1");
+  //     handleSelectView("view1");
+  //     moveCameraTo(initialView);
+  //   }, 1000);
+  // }, []);
 
   useEffect(() => {
     objectToView && moveCameraTo(objectToView);
@@ -36,13 +38,10 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
 
   return (
     <>
-      <Perf position="top-center" />
+      {/* <Perf position="bottom-left" /> */}
 
       <Camera ref={cameraRef} />
-      <Sky
-        distance={450000}
-        sunPosition={[10, 1, 10]}
-      />
+      <Sky distance={450000} sunPosition={[10, 1, 10]} />
       <directionalLight
         castShadow
         // shadow-bias={0.4}

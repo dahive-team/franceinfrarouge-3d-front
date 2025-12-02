@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { AudioContext } from "three";
 import { Canvas } from "@react-three/fiber";
 import { ReactLenis } from "lenis/react";
-import { LazyMotion, m } from "framer-motion";
+import { LazyMotion, m, AnimatePresence } from "framer-motion";
 
 import { views, getView, getPrevNextView } from "./content.js";
 
@@ -54,17 +54,18 @@ export default function App() {
   const scrollContainerRef = useRef(null);
   const scrollCooldown = useRef(false);
   const sidebarRef = useRef(null);
-  const [view, setView] = useState(null);
+  const [view, setView] = useState("view0");
   const [muted, setMuted] = useState(true);
+  const isInitialView = view === "view0";
 
   const handleSelectView = (v) => {
     setView(v);
   };
 
   const viewContent = getView(view) || null;
-  const buttonIsActive = (id) => viewContent?.id === id;
+  const buttonIsActive = (id) => id === view;
 
-  const { prevView, nextView } = getPrevNextView(viewContent?.id) || {};
+  const { prevView, nextView } = getPrevNextView(view) || {};
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -88,7 +89,7 @@ export default function App() {
 
       setTimeout(() => {
         scrollCooldown.current = false;
-      }, 1000);
+      }, 1500);
     };
 
     container.addEventListener("wheel", handleScroll, { passive: true });
@@ -114,7 +115,7 @@ export default function App() {
   return (
     <LazyMotion features={loadDomAnimations} strict>
       <ReactLenis root />
-      <section ref={scrollContainerRef} className="scrollContainer">
+      <section ref={scrollContainerRef} className="factory3d-hero">
         <m.ul
           className="journey-buttons"
           variants={ulVariants}
@@ -138,42 +139,82 @@ export default function App() {
             </m.li>
           ))}
         </m.ul>
-        <Canvas
-          dpr={[1, 1.25]}
-          shadows
-          className="canvas"
-          camera={{
-            fov: 45,
-            near: 0.1,
-            far: 200,
-            position: [-20, 10, 20],
-          }}
-        >
-          <Experience
-            objectToView={viewContent}
-            handleSelectView={handleSelectView}
-            sidebarIsHidden={viewContent === null}
-            muted={muted}
-          />
-        </Canvas>
-        <SideBar
-          sidebarRef={sidebarRef}
-          handleSelectView={handleSelectView}
-          prevView={prevView}
-          nextView={nextView}
-          view={view}
-        />
+        <AnimatePresence mode="wait">
+          {view !== "view0" && (
+            <>
+              <m.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 0.7 }}
+              >
+                <Canvas
+                  dpr={[1, 1.25]}
+                  shadows
+                  className="canvas"
+                  camera={{
+                    fov: 45,
+                    near: 0.1,
+                    far: 200,
+                    position: [-20, 10, 20],
+                  }}
+                >
+                  <Experience
+                    objectToView={viewContent}
+                    handleSelectView={handleSelectView}
+                    sidebarIsHidden={viewContent === null}
+                    muted={muted}
+                  />
+                </Canvas>
+              </m.div>
+              <SideBar
+                sidebarRef={sidebarRef}
+                handleSelectView={handleSelectView}
+                prevView={prevView}
+                nextView={nextView}
+                view={view}
+              />
+              <m.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 150,
+                  damping: 24,
+                  // delay: 2.7,
+                  delay: 1.7,
+                }}
+              >
+                <MuteButton muted={muted} handleMute={handleMute} />
+              </m.div>
+            </>
+          )}
+        </AnimatePresence>
         <m.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            type: "spring",
-            stiffness: 150,
-            damping: 24,
-            delay: 2.7,
-          }}
+          className={`factory3d-hero-background-container ${
+            isInitialView ? "" : "hidden"
+          }`}
         >
-          <MuteButton muted={muted} handleMute={handleMute} />
+          <div className="factory3d-hero-background-wrapper">
+            <img
+              className="factory3d-hero-background"
+              src="/background.jpg"
+              alt="Factory background"
+            />
+          </div>
+          <div className="factory3d-hero-texts">
+            <span>FRANCE INFRA ROUGE</span>
+            <h1>
+              Expert en services
+              <br />
+              et solutions thermographiques
+            </h1>
+            <span
+              className={`factory3d-hero-loader ${
+                view === "view1" ? "loading" : ""
+              }`}
+            />
+          </div>
         </m.div>
       </section>
     </LazyMotion>

@@ -13,13 +13,13 @@ export default function SideBar({
   const viewContent = getView(view) || null;
 
   const handleCloseSidebar = () => {
-    handleSelectView("view0");
+    handleSelectView("view1");
   };
 
   return (
     <AnimatePresence mode="wait">
       <m.div
-        key={view === "view0"}
+        key={view === "view1"}
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -100 }}
@@ -43,7 +43,7 @@ export default function SideBar({
           )}
         </div>
         <AnimatePresence mode="wait">
-          {view !== "view0" && (
+          {view !== "view1" && (
             <m.aside
               key={viewContent?.id}
               initial={{ opacity: 0, y: 100 }}
