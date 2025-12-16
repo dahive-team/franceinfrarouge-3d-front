@@ -9,6 +9,7 @@ import { views, getView, getPrevNextView } from "./content.js";
 import Experience from "./Experience.jsx";
 import SideBar from "./SideBar.jsx";
 import MuteButton from "./MuteButton.jsx";
+
 const loadDomAnimations = () =>
   import("../lib/motion.js").then((res) => res.default);
 
@@ -139,69 +140,49 @@ export default function App() {
             </m.li>
           ))}
         </m.ul>
-        <AnimatePresence mode="wait">
-          {view !== "view0" && (
-            <>
-              <m.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: 0.7 }}
-              >
-                <Canvas
-                  dpr={[1, 1.25]}
-                  shadows
-                  className="canvas"
-                  camera={{
-                    fov: 45,
-                    near: 0.1,
-                    far: 200,
-                    position: [-20, 10, 20],
-                  }}
-                >
-                  <Experience
-                    objectToView={viewContent}
-                    handleSelectView={handleSelectView}
-                    sidebarIsHidden={viewContent === null}
-                    muted={muted}
-                  />
-                </Canvas>
-              </m.div>
-              <SideBar
-                sidebarRef={sidebarRef}
-                handleSelectView={handleSelectView}
-                prevView={prevView}
-                nextView={nextView}
-                view={view}
-              />
-              <m.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 150,
-                  damping: 24,
-                  // delay: 2.7,
-                  delay: 1.7,
-                }}
-              >
-                <MuteButton muted={muted} handleMute={handleMute} />
-              </m.div>
-            </>
-          )}
-        </AnimatePresence>
+        <Canvas
+          dpr={[1, 1.25]}
+          shadows
+          className="canvas"
+          camera={{
+            fov: 45,
+            near: 0.1,
+            far: 200,
+            position: [-20, 10, 20],
+          }}
+        >
+          <Experience
+            objectToView={viewContent}
+            handleSelectView={handleSelectView}
+            sidebarIsHidden={viewContent === null}
+            muted={muted}
+          />
+        </Canvas>
+        <SideBar
+          sidebarRef={sidebarRef}
+          handleSelectView={handleSelectView}
+          prevView={prevView}
+          nextView={nextView}
+          view={view}
+        />
+        <m.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            type: "spring",
+            stiffness: 150,
+            damping: 24,
+            // delay: 2.7,
+            delay: 1.7,
+          }}
+        >
+          <MuteButton muted={muted} handleMute={handleMute} />
+        </m.div>
         <m.div
           className={`factory3d-hero-background-container ${
             isInitialView ? "" : "hidden"
           }`}
         >
-          <div className="factory3d-hero-background-wrapper">
-            <img
-              className="factory3d-hero-background"
-              src="/background.jpg"
-              alt="Factory background"
-            />
-          </div>
           <div className="factory3d-hero-texts">
             <span>FRANCE INFRA ROUGE</span>
             <h1>

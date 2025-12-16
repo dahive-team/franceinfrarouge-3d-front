@@ -3,8 +3,6 @@ import { Sky } from "@react-three/drei";
 // import { useControls } from "leva";
 import { Perf } from "r3f-perf";
 
-import { getView } from "./content";
-
 import Factory from "./Factory";
 import Buttons from "./Buttons";
 import Camera from "./Camera";
@@ -13,6 +11,7 @@ import Sounds from "./Sounds";
 export default function Experience({ objectToView, handleSelectView, muted }) {
   const groupRef = useRef(null);
   const cameraRef = useRef(null);
+  const showButtons = objectToView?.id !== "view0";
 
   const moveCameraTo = (view) => {
     if (cameraRef.current) {
@@ -38,7 +37,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
 
   return (
     <>
-      {/* <Perf position="bottom-left" /> */}
+      <Perf position="bottom-left" />
 
       <Camera ref={cameraRef} />
       <Sky distance={450000} sunPosition={[10, 1, 10]} />
@@ -61,12 +60,16 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
       <group ref={groupRef}>
         <Suspense fallback={null}>
           <Factory scale={0.4} />
-          <Buttons
-            onClickEvent={handleSelectView}
-            moveCameraTo={moveCameraTo}
-            currentObject={objectToView}
-          />
-          <Sounds muted={muted} />
+          {showButtons && (
+            <>
+              <Buttons
+                onClickEvent={handleSelectView}
+                moveCameraTo={moveCameraTo}
+                currentObject={objectToView}
+              />
+              <Sounds muted={muted} />
+            </>
+          )}
         </Suspense>
       </group>
     </>

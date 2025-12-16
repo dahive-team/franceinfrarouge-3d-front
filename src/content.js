@@ -2,6 +2,9 @@ export const views = [
   {
     id: "view0",
     title: "< retour",
+    position: [-20, 10, 20],
+    cameraPosition: [-20, 10, 20],
+    target: [0, 0, 0],
   },
   {
     id: "view1",

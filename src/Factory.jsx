@@ -1,11 +1,18 @@
 import { useEffect } from "react";
-import { useGLTF, useAnimations  } from "@react-three/drei";
+import { useGLTF, useAnimations } from "@react-three/drei";
 
 export default function Factory({ onClickEvent, moveCameraTo, ...props }) {
-  const { scene, animations  } = useGLTF("/factory.glb", true);
-  // const { actions, names} = useAnimations(animations, scene);
-  // actions[names[0]]?.play()
+  const { scene, animations } = useGLTF("/factory.glb", true);
+  const { actions, names } = useAnimations(animations, scene);
 
+  // Exécute les animations
+  useEffect(() => {
+    names?.map((name) => {
+      actions[name]?.play();
+    });
+  }, [actions, names]);
+
+  // Applique les ombres aux meshes qui en ont besoin
   useEffect(() => {
     scene.traverse((child) => {
       if (child.isMesh) {
