@@ -37,7 +37,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
 
   return (
     <>
-      <Perf position="bottom-left" />
+      {/* <Perf position="bottom-left" /> */}
 
       <Camera ref={cameraRef} />
       <Sky distance={450000} sunPosition={[10, 1, 10]} />
@@ -58,19 +58,14 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
       />
       <ambientLight intensity={1} />
       <group ref={groupRef}>
-        <Suspense fallback={null}>
-          <Factory scale={0.4} />
-          {showButtons && (
-            <>
-              <Buttons
-                onClickEvent={handleSelectView}
-                moveCameraTo={moveCameraTo}
-                currentObject={objectToView}
-              />
-              <Sounds muted={muted} />
-            </>
-          )}
-        </Suspense>
+        <Factory scale={0.4} />
+        <Buttons
+          onClickEvent={handleSelectView}
+          moveCameraTo={moveCameraTo}
+          currentObject={objectToView}
+          showButtons={showButtons}
+        />
+        <Sounds muted={muted} />
       </group>
     </>
   );

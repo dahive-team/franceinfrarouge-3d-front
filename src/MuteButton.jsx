@@ -1,4 +1,4 @@
-import { delay, m } from "framer-motion";
+import { m } from "framer-motion";
 
 const barAnim = {
   unmuted: (custom) => ({

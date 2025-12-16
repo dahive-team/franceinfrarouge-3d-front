@@ -2,45 +2,17 @@ import { useState, useEffect, useRef } from "react";
 import { AudioContext } from "three";
 import { Canvas } from "@react-three/fiber";
 import { ReactLenis } from "lenis/react";
-import { LazyMotion, m, AnimatePresence } from "framer-motion";
+import { AnimatePresence, LazyMotion, m } from "framer-motion";
 
 import { views, getView, getPrevNextView } from "./content.js";
 
 import Experience from "./Experience.jsx";
 import SideBar from "./SideBar.jsx";
 import MuteButton from "./MuteButton.jsx";
+import CanvasLoader from "./CanvasLoader.jsx";
 
 const loadDomAnimations = () =>
   import("../lib/motion.js").then((res) => res.default);
-
-const ulVariants = {
-  rest: { opacity: 0, y: 20 },
-  enter: {
-    opacity: 1,
-    y: 0,
-    transition: { delay: 2.3, type: "spring", stiffness: 150, damping: 24 },
-  },
-  hover: {
-    transition: { staggerChildren: 0.08 },
-  },
-};
-
-const iconVariants = {
-  rest: { opacity: 1, y: 0 },
-  enter: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      opacity: { delay: 0.15, duration: 0.2 },
-      y: { delay: 0.15, type: "spring", stiffness: 150, damping: 24 },
-    },
-  },
-  hover: {
-    opacity: 0,
-    y: -10,
-    transition: { type: "spring", stiffness: 150, damping: 24 },
-  },
-};
 
 const liVariants = {
   rest: { opacity: 0, y: 12 },
@@ -73,8 +45,6 @@ export default function App() {
     if (!container) return;
 
     const handleScroll = (e) => {
-      // Si on scroll dans la sidebar, on ne fait rien
-      if (sidebarRef.current?.contains(e.target)) return;
       // Si scrollCooldown est actif, on ignore l'événement
       if (scrollCooldown.current) return;
 
@@ -117,33 +87,61 @@ export default function App() {
     <LazyMotion features={loadDomAnimations} strict>
       <ReactLenis root />
       <section ref={scrollContainerRef} className="factory3d-hero">
-        <m.ul
-          className="journey-buttons"
-          variants={ulVariants}
-          initial="rest"
-          animate="enter"
-          whileHover="hover"
-        >
-          <m.img
-            variants={iconVariants}
-            src="/path.svg"
-            className="journey-icon"
-            alt="Path icon"
-          />
-          {views?.map(({ id, title }) => (
-            <m.li
-              key={id}
-              className={buttonIsActive(id) ? "isActive" : ""}
-              variants={liVariants}
+        <AnimatePresence>
+          {!isInitialView && (
+            <m.ul
+              initial={{ opacity: 0, y: 20 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                transition: {
+                  delay: 1,
+                  type: "spring",
+                  stiffness: 150,
+                  damping: 24,
+                },
+              }}
+              exit={{ opacity: 0, y: 0 }}
+              className="factory3d-journey-buttons"
             >
-              <button onClick={() => handleSelectView(id)}>{title}</button>
-            </m.li>
-          ))}
-        </m.ul>
+              {views
+                ?.filter(({ id }) => id !== "view0")
+                ?.map(({ id, title }) => {
+                  const isActive = buttonIsActive(id);
+
+                  return (
+                    <li
+                      className={`factory3d-journey-button ${
+                        isActive ? "isActive" : ""
+                      }`}
+                    >
+                      {isActive && (
+                        <m.div
+                          layoutId="background"
+                          id="background"
+                          className="factory3d-journey-button-background"
+                          transition={{
+                            duration: 0.5,
+                            type: "spring",
+                            stiffness: 150,
+                            damping: 24,
+                          }}
+                        />
+                      )}
+                      <button onClick={() => handleSelectView(id)}>
+                        {title}
+                      </button>
+                    </li>
+                  );
+                })}
+            </m.ul>
+          )}
+        </AnimatePresence>
+        <CanvasLoader />
         <Canvas
           dpr={[1, 1.25]}
           shadows
-          className="canvas"
+          className="factory3d-canvas"
           camera={{
             fov: 45,
             near: 0.1,
@@ -172,7 +170,6 @@ export default function App() {
             type: "spring",
             stiffness: 150,
             damping: 24,
-            // delay: 2.7,
             delay: 1.7,
           }}
         >
@@ -190,11 +187,6 @@ export default function App() {
               <br />
               et solutions thermographiques
             </h1>
-            <span
-              className={`factory3d-hero-loader ${
-                view === "view1" ? "loading" : ""
-              }`}
-            />
           </div>
         </m.div>
       </section>

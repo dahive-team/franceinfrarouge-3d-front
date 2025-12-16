@@ -6,6 +6,7 @@ export default function Buttons({
   onClickEvent,
   moveCameraTo,
   currentObject,
+  showButtons,
   ...props
 }) {
   const handleClick = (id) => {
@@ -24,37 +25,21 @@ export default function Buttons({
   return (
     <group {...props} dispose={null}>
       {items.map(({ id, position, shortTitle }, i) => (
-        <motion.mesh
-          key={`button-${id}`}
-          initial={{ scale: 0.1 }}
-          animate={{ scale: 1 }}
-          transition={{
-            type: "spring",
-            // delay: 2.2 + i * 0.08,
-            delay: 1.2 + i * 0.08,
-          }}
-        >
-          <Html wrapperClass="label" position={position}>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                type: "spring",
-                delay: 1.5 + i * 0.08,
-                // delay: 2.5 + i * 0.08,
-              }}
+        <mesh key={`button-${id}`}>
+          <Html wrapperClass="focus-button-container" position={position}>
+            <div
               className={`focus-button-wrapper ${
-                buttonIsActive(id) ? "active" : ""
-              }`}
+                showButtons ? "focus-button-wrapper-show" : ""
+              } ${buttonIsActive(id) ? "active" : ""}`}
             >
               <button
                 className="focus-button"
                 onClick={() => handleClick(id)}
               />
               <span className="focus-button-label">{shortTitle}</span>
-            </motion.div>
+            </div>
           </Html>
-        </motion.mesh>
+        </mesh>
       ))}
     </group>
   );
