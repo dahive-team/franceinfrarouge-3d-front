@@ -12,6 +12,7 @@ import SideBar from "./SideBar.jsx";
 import MuteButton from "./MuteButton.jsx";
 import CanvasLoader from "./CanvasLoader.jsx";
 import Steps from "./Steps.jsx";
+import Title from "./Title.jsx";
 
 const loadDomAnimations = () =>
   import("../lib/motion.js").then((res) => res.default);
@@ -120,20 +121,7 @@ export default function App() {
           muted={muted}
           handleMute={handleMute}
         />
-        <m.div
-          className={`factory3d-hero-background-container ${
-            isInitialView ? "" : "hidden"
-          }`}
-        >
-          <div className="factory3d-hero-texts">
-            <span>FRANCE INFRA ROUGE</span>
-            <h1>
-              Expert en services
-              <br />
-              et solutions thermographiques
-            </h1>
-          </div>
-        </m.div>
+        <Title isInitialView={isInitialView} />
       </section>
     </LazyMotion>
   );

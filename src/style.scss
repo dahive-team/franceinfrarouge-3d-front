@@ -99,6 +99,11 @@ body,
   cursor: pointer;
   border-radius: 50px;
   z-index: 1;
+  transition: scale 0.2s ease-out;
+
+  &:hover {
+    scale: 1.1;
+  }
 }
 
 .factory3d-canvas-loader-container {
