@@ -84,7 +84,7 @@ export default function App() {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="factory3d-return-button factory3d-has-glass-effect"
+            className="factory3d-return-button factory3d-has-glass-effect factory3d-has-hover-effect"
             onClick={() => handleSelectView("view0")}
           />
         )}

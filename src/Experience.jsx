@@ -28,7 +28,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
 
   return (
     <>
-      <Perf position="bottom-left" />
+      {/* <Perf position="bottom-left" /> */}
 
       <Camera ref={cameraRef} />
       <Sky distance={450000} sunPosition={[10, 1, 10]} />

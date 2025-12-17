@@ -33,13 +33,13 @@ export default function SideBar({
           <div className="journey-prev-next-buttons">
             {prevView && (
               <button
-                className="prev  factory3d-has-glass-effect"
+                className="prev factory3d-has-glass-effect factory3d-has-hover-effect"
                 onClick={() => handleSelectView(prevView?.id)}
               />
             )}
             {nextView && (
               <button
-                className="next  factory3d-has-glass-effect"
+                className="next factory3d-has-glass-effect factory3d-has-hover-effect"
                 onClick={() => handleSelectView(nextView?.id)}
               />
             )}

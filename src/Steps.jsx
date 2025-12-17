@@ -25,7 +25,7 @@ export default function Steps({ view, handleSelectView }) {
                 return (
                   <li
                     key={`step-${id}`}
-                    className={`factory3d-journey-button ${
+                    className={`factory3d-journey-button factory3d-has-hover-effect ${
                       isActive ? "isActive" : ""
                     }`}
                   >

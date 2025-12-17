@@ -34,7 +34,7 @@ export default function MuteButton({ isInitialView, muted, handleMute }) {
           exit="exit"
         >
           <m.button
-            className="journey-mute-button factory3d-has-glass-effect"
+            className="journey-mute-button factory3d-has-glass-effect factory3d-has-hover-effect"
             onClick={handleMute}
             initial={false}
             animate={muted ? "muted" : "unmuted"}
