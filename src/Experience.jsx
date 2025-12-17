@@ -22,22 +22,13 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
     }
   };
 
-  // Position en view1 une seconde après le chargement de la scène
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     const initialView = getView("view1");
-  //     handleSelectView("view1");
-  //     moveCameraTo(initialView);
-  //   }, 1000);
-  // }, []);
-
   useEffect(() => {
     objectToView && moveCameraTo(objectToView);
   }, [objectToView]);
 
   return (
     <>
-      {/* <Perf position="bottom-left" /> */}
+      <Perf position="bottom-left" />
 
       <Camera ref={cameraRef} />
       <Sky distance={450000} sunPosition={[10, 1, 10]} />

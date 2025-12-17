@@ -66,23 +66,23 @@ body,
   position: relative;
   height: 100%;
   transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
-}
 
-.factory3d-hero-background-container.hidden {
-  opacity: 0;
-  visibility: hidden;
-}
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
 
-.factory3d-hero-background-container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  opacity: 0.5;
-  background-color: black;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.5;
+    background-color: black;
+  }
 }
 
 .factory3d-canvas-loader-container {
@@ -91,6 +91,22 @@ body,
   left: 0;
   width: 100vw;
   height: 100vh;
+}
+
+.factory3d-return-button {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  background-image: url("/return.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
+  cursor: pointer;
+  border-radius: 50px;
+  z-index: 1;
 }
 
 .factory3d-canvas-loader {
@@ -118,10 +134,15 @@ body,
   margin-top: 1.5rem;
 }
 
-.factory3d-journey-buttons {
+.factory3d-journey-buttons-wrapper {
   position: absolute;
   top: 0rem;
   left: 50%;
+  z-index: 1;
+  translate: -50% 0;
+}
+
+.factory3d-journey-buttons {
   list-style: none;
   padding: 0.3rem 0.6rem;
   display: flex;
@@ -129,13 +150,7 @@ body,
   align-items: center;
   flex-wrap: wrap;
   gap: 0rem 0.5rem;
-  background: rgba(0, 0, 0, 0.207);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(15px) saturate(140%);
-  box-shadow: 0 8px 50px rgba(0, 0, 0, 0.18);
   border-radius: 50px;
-  z-index: 1;
-  translate: -50% 0;
 
   .factory3d-journey-button {
     position: relative;
@@ -333,10 +348,6 @@ body,
 
   button {
     position: relative;
-    background: rgba(255, 255, 255, 0.192);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(30px) saturate(140%);
-    box-shadow: 0 8px 50px rgba(0, 0, 0, 0.18);
     color: black;
     border: 1px solid black;
     width: 3rem;
@@ -371,10 +382,6 @@ body,
   width: 30vw;
   height: fit-content;
   max-height: 80vh;
-  background: rgba(255, 255, 255, 0.192);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(30px) saturate(140%);
-  box-shadow: 0 8px 50px rgba(0, 0, 0, 0.18);
   clip-path: inset(0 round 20px);
   overflow-x: hidden;
   scrollbar-width: thin;
@@ -457,10 +464,6 @@ body,
   right: 2rem;
   color: white;
   text-shadow: 0px 0px 20px #5b5b5b;
-  background: rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(30px) saturate(140%);
-  box-shadow: 0 8px 50px rgba(0, 0, 0, 0.18);
   font-size: 0.8rem;
   border: none;
   padding: 0.5rem 1rem;
@@ -487,4 +490,11 @@ body,
 
 #leva__root > div {
   inset: auto auto 1rem 1rem;
+}
+
+.factory3d-has-glass-effect {
+  background-color: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 50px rgba(0, 0, 0, 0.18);
 }

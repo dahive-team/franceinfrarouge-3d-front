@@ -1,4 +1,5 @@
-import { m } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
+import { animateFromBottom } from "../lib/animations";
 
 const barAnim = {
   unmuted: (custom) => ({
@@ -22,27 +23,38 @@ function Bar({ delay = 0 }) {
   );
 }
 
-export default function MuteButton({ muted, handleMute }) {
+export default function MuteButton({ isInitialView, muted, handleMute }) {
   return (
-    <m.button
-      className="journey-mute-button"
-      onClick={handleMute}
-      initial={false}
-      animate={muted ? "muted" : "unmuted"}
-    >
-      <m.div
-        className={`journey-mute-bars ${
-          muted ? "journey-mute-bars-muted" : ""
-        }`}
-      >
-        <Bar delay={0.0} />
-        <Bar delay={0.1} />
-        <Bar delay={0.2} />
-        <Bar delay={0.3} />
-        <Bar delay={0.4} />
-        <Bar delay={0.5} />
-      </m.div>
-      <span>{muted ? "Activer" : "Désactiver"} le son</span>
-    </m.button>
+    <AnimatePresence>
+      {!isInitialView && (
+        <m.div
+          variants={animateFromBottom({ delay: 1.4 })}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
+          <m.button
+            className="journey-mute-button factory3d-has-glass-effect"
+            onClick={handleMute}
+            initial={false}
+            animate={muted ? "muted" : "unmuted"}
+          >
+            <m.div
+              className={`journey-mute-bars ${
+                muted ? "journey-mute-bars-muted" : ""
+              }`}
+            >
+              <Bar delay={0.0} />
+              <Bar delay={0.1} />
+              <Bar delay={0.2} />
+              <Bar delay={0.3} />
+              <Bar delay={0.4} />
+              <Bar delay={0.5} />
+            </m.div>
+            <span>{muted ? "Activer" : "Désactiver"} le son</span>
+          </m.button>
+        </m.div>
+      )}
+    </AnimatePresence>
   );
 }

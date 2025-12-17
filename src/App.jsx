@@ -2,26 +2,19 @@ import { useState, useEffect, useRef } from "react";
 import { AudioContext } from "three";
 import { Canvas } from "@react-three/fiber";
 import { ReactLenis } from "lenis/react";
-import { AnimatePresence, LazyMotion, m } from "framer-motion";
+import { LazyMotion, m } from "framer-motion";
 
-import { views, getView, getPrevNextView } from "./content.js";
+import { getView, getPrevNextView } from "./content.js";
+import { animateFromBottom } from "../lib/animations.js";
 
 import Experience from "./Experience.jsx";
 import SideBar from "./SideBar.jsx";
 import MuteButton from "./MuteButton.jsx";
 import CanvasLoader from "./CanvasLoader.jsx";
+import Steps from "./Steps.jsx";
 
 const loadDomAnimations = () =>
   import("../lib/motion.js").then((res) => res.default);
-
-const liVariants = {
-  rest: { opacity: 0, y: 12 },
-  hover: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 150, damping: 24 },
-  },
-};
 
 export default function App() {
   const scrollContainerRef = useRef(null);
@@ -36,8 +29,6 @@ export default function App() {
   };
 
   const viewContent = getView(view) || null;
-  const buttonIsActive = (id) => id === view;
-
   const { prevView, nextView } = getPrevNextView(view) || {};
 
   useEffect(() => {
@@ -87,56 +78,17 @@ export default function App() {
     <LazyMotion features={loadDomAnimations} strict>
       <ReactLenis root />
       <section ref={scrollContainerRef} className="factory3d-hero">
-        <AnimatePresence>
-          {!isInitialView && (
-            <m.ul
-              initial={{ opacity: 0, y: 20 }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                transition: {
-                  delay: 1,
-                  type: "spring",
-                  stiffness: 150,
-                  damping: 24,
-                },
-              }}
-              exit={{ opacity: 0, y: 0 }}
-              className="factory3d-journey-buttons"
-            >
-              {views
-                ?.filter(({ id }) => id !== "view0")
-                ?.map(({ id, title }) => {
-                  const isActive = buttonIsActive(id);
-
-                  return (
-                    <li
-                      className={`factory3d-journey-button ${
-                        isActive ? "isActive" : ""
-                      }`}
-                    >
-                      {isActive && (
-                        <m.div
-                          layoutId="background"
-                          id="background"
-                          className="factory3d-journey-button-background"
-                          transition={{
-                            duration: 0.5,
-                            type: "spring",
-                            stiffness: 150,
-                            damping: 24,
-                          }}
-                        />
-                      )}
-                      <button onClick={() => handleSelectView(id)}>
-                        {title}
-                      </button>
-                    </li>
-                  );
-                })}
-            </m.ul>
-          )}
-        </AnimatePresence>
+        {!isInitialView && (
+          <m.button
+            variants={animateFromBottom({ delay: 1 })}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className="factory3d-return-button factory3d-has-glass-effect"
+            onClick={() => handleSelectView("view0")}
+          />
+        )}
+        <Steps view={view} handleSelectView={handleSelectView} />
         <CanvasLoader />
         <Canvas
           dpr={[1, 1.25]}
@@ -163,18 +115,11 @@ export default function App() {
           nextView={nextView}
           view={view}
         />
-        <m.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            type: "spring",
-            stiffness: 150,
-            damping: 24,
-            delay: 1.7,
-          }}
-        >
-          <MuteButton muted={muted} handleMute={handleMute} />
-        </m.div>
+        <MuteButton
+          isInitialView={isInitialView}
+          muted={muted}
+          handleMute={handleMute}
+        />
         <m.div
           className={`factory3d-hero-background-container ${
             isInitialView ? "" : "hidden"

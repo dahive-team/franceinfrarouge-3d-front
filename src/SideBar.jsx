@@ -11,6 +11,7 @@ export default function SideBar({
   view,
 }) {
   const viewContent = getView(view) || null;
+  const isInitialView = view === "view0";
 
   const handleCloseSidebar = () => {
     handleSelectView("view1");
@@ -28,20 +29,22 @@ export default function SideBar({
           viewContent?.triggerSidebar ? "show" : ""
         }`}
       >
-        <div className="journey-prev-next-buttons">
-          {prevView && (
-            <button
-              className="prev"
-              onClick={() => handleSelectView(prevView?.id)}
-            />
-          )}
-          {nextView && (
-            <button
-              className="next"
-              onClick={() => handleSelectView(nextView?.id)}
-            />
-          )}
-        </div>
+        {!isInitialView && (
+          <div className="journey-prev-next-buttons">
+            {prevView && (
+              <button
+                className="prev  factory3d-has-glass-effect"
+                onClick={() => handleSelectView(prevView?.id)}
+              />
+            )}
+            {nextView && (
+              <button
+                className="next  factory3d-has-glass-effect"
+                onClick={() => handleSelectView(nextView?.id)}
+              />
+            )}
+          </div>
+        )}
         <AnimatePresence mode="wait">
           {view !== "view1" && (
             <m.aside
@@ -52,7 +55,7 @@ export default function SideBar({
               transition={{ type: "spring", stiffness: 150, damping: 24 }}
               ref={sidebarRef}
               data-lenis-prevent
-              className="journey-sidebar"
+              className="journey-sidebar factory3d-has-glass-effect"
             >
               {viewContent?.image && (
                 <img src={viewContent?.image} alt={viewContent?.title} />
