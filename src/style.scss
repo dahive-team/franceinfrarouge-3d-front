@@ -85,14 +85,6 @@ body,
   }
 }
 
-.factory3d-canvas-loader-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-}
-
 .factory3d-return-button {
   position: absolute;
   top: 1rem;
@@ -107,6 +99,14 @@ body,
   cursor: pointer;
   border-radius: 50px;
   z-index: 1;
+}
+
+.factory3d-canvas-loader-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
 }
 
 .factory3d-canvas-loader {
