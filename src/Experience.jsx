@@ -7,6 +7,7 @@ import Factory from "./Factory";
 import Buttons from "./Buttons";
 import Camera from "./Camera";
 import Sounds from "./Sounds";
+import Fire from "./Fire";
 
 export default function Experience({ objectToView, handleSelectView, muted }) {
   const groupRef = useRef(null);
@@ -28,7 +29,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
 
   return (
     <>
-      {/* <Perf position="bottom-left" /> */}
+      <Perf position="bottom-left" />
 
       <Camera ref={cameraRef} />
       <Sky distance={450000} sunPosition={[10, 1, 10]} />
@@ -57,6 +58,19 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
           showButtons={showButtons}
         />
         <Sounds muted={muted} />
+        {/* Cheminées */}
+        <Fire origin={[15.7, 12, -4.65]} radius={0.6} height={10} />
+        <Fire origin={[21.5, 13, -4.7]} radius={0.7} height={15} />
+        {/* Incendie */}
+        <Fire
+          origin={[-4.5, -1, -22.5]}
+          radius={0.6}
+          height={5}
+          size={1.3}
+          count={110}
+          speed={0.004}
+          isFire
+        />
       </group>
     </>
   );

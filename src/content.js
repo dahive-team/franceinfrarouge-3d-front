@@ -43,8 +43,8 @@ export const views = [
     image:
       "https://images.unsplash.com/photo-1732375693657-e57adced90f8?auto=format&fit=crop&w=640&h=480",
     position: [-3, 0, -20],
-    cameraPosition: [-6, 2, -15],
-    target: [0, -3, -35],
+    cameraPosition: [-6, 3, -15],
+    target: [0, -1, -35],
     triggerSidebar: true,
     sound: "/sounds/birds.mp3",
   },
