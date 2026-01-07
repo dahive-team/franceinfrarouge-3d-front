@@ -8,6 +8,7 @@ import Buttons from "./Buttons";
 import Camera from "./Camera";
 import Sounds from "./Sounds";
 import Fire from "./Fire";
+import GasLeaks from "./GasLeaks";
 
 export default function Experience({ objectToView, handleSelectView, muted }) {
   const groupRef = useRef(null);
@@ -67,10 +68,11 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
           radius={0.6}
           height={5}
           size={1.3}
-          count={110}
+          count={200}
           speed={0.004}
           isFire
         />
+        <GasLeaks />
       </group>
     </>
   );

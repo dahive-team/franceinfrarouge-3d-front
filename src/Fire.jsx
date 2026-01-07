@@ -6,7 +6,7 @@ import { useTexture } from "@react-three/drei";
 const rand = (min, max) => min + Math.random() * (max - min);
 
 export default function Fire({
-  count = 100,
+  count = 300,
   origin = [0, 0, 0],
   radius = 0.2,
   height = 1.5,
