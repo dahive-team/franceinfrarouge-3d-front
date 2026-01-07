@@ -51,7 +51,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
       />
       <ambientLight intensity={1} />
       <group ref={groupRef}>
-        <Factory scale={0.4} />
+        <Factory scale={0.4} position-z={-2.6} />
         <Buttons
           onClickEvent={handleSelectView}
           moveCameraTo={moveCameraTo}
@@ -60,7 +60,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
         />
         <Sounds muted={muted} />
         {/* Cheminées */}
-        <Fire origin={[15.7, 12, -4.65]} radius={0.6} height={10} />
+        <Fire origin={[15.7, 12, -4.7]} radius={0.6} height={10} />
         <Fire origin={[21.5, 13, -4.7]} radius={0.7} height={15} />
         {/* Incendie */}
         <Fire
