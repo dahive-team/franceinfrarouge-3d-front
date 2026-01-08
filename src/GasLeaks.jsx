@@ -1,15 +1,17 @@
-import { useMemo, useRef } from "react";
-import { NormalBlending } from "three";
+import { memo, useMemo, useRef } from "react";
+import { NormalBlending, DynamicDrawUsage } from "three";
 import { useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 
 const rand = (min, max) => min + Math.random() * (max - min);
 
+// Fonction de normalisation rapide
 function normalize3(x, y, z) {
   const len = Math.hypot(x, y, z) || 1;
   return [x / len, y / len, z / len];
 }
 
+// Fonction pour générer des particules dans un disque sans trigonométrie
 function randomInDisk(rMax) {
   let x, z;
   do {
@@ -19,7 +21,7 @@ function randomInDisk(rMax) {
   return [x, z];
 }
 
-// Dir dans un cône (approx rapide, sans trig lourd)
+// Génère une direction aléatoire dans un cône
 function randomCone(dx, dy, dz, spread) {
   const nx = dx + rand(-spread, spread);
   const ny = dy + rand(-spread, spread);
@@ -27,29 +29,26 @@ function randomCone(dx, dy, dz, spread) {
   return normalize3(nx, ny, nz);
 }
 
-export default function GasLeaks({
-  leaks = [
-    {
-      origin: [15.5, 2, 17.5],
-      direction: [1, 8, 0.2],
-    },
-    {
-      origin: [21.5, 2, 17.5],
-      direction: [1, 8, 0],
-    },
-  ],
-  count = 160,
-  size = 0.9,
-  opacity = 0.22,
-  updateFps = 30,
-}) {
+// Définition des fuites
+const LEAKS = [
+  {
+    origin: [15.5, 2, 17.5],
+    direction: [1, 8, 0.2],
+  },
+  {
+    origin: [21.5, 2, 17.5],
+    direction: [1, 8, 0],
+  },
+];
+
+function GasLeaks({ count = 160, size = 0.9, opacity = 0.22, updateFps = 30 }) {
   const ref = useRef(null);
-  const smokeTex = useTexture("/particle-smoke.png");
+  const tex = useTexture("/particle-smoke.png");
 
+  // Pré-calcul des valeurs statiques
   const data = useMemo(() => {
-    const leakCount = Math.max(1, leaks.length);
+    const leakCount = LEAKS.length;
 
-    // Normalise directions + précompute origin
     const ox = new Float32Array(leakCount);
     const oy = new Float32Array(leakCount);
     const oz = new Float32Array(leakCount);
@@ -68,7 +67,7 @@ export default function GasLeaks({
     const lifeMax = new Float32Array(leakCount);
 
     for (let i = 0; i < leakCount; i++) {
-      const l = leaks[i] ?? {};
+      const l = LEAKS[i] ?? {};
 
       const o = l.origin ?? [0, 0, 0];
       ox[i] = o[0];
@@ -94,7 +93,6 @@ export default function GasLeaks({
       lifeMax[i] = life[1];
     }
 
-    // Buffers particules
     const positions = new Float32Array(count * 3);
     const velocities = new Float32Array(count * 3);
     const ages = new Float32Array(count);
@@ -107,7 +105,6 @@ export default function GasLeaks({
       const j = jitterArr[li];
 
       // petit jitter local (autour de l’origine)
-      // pour éviter un jet trop “laser”
       const [jx, jz] = randomInDisk(j);
 
       positions[idx] = ox[li] + jx;
@@ -125,7 +122,7 @@ export default function GasLeaks({
       lifes[i] = rand(lifeMin[li], lifeMax[li]);
     }
 
-    // init: répartition round-robin
+    // init (round-robin)
     for (let i = 0; i < count; i++) {
       const li = i % leakCount;
       leakIndex[i] = li;
@@ -151,7 +148,7 @@ export default function GasLeaks({
       leakIndex,
       spawn,
     };
-  }, [leaks, count]);
+  }, [count]);
 
   const acc = useRef(0);
 
@@ -159,7 +156,7 @@ export default function GasLeaks({
     const geom = ref.current?.geometry;
     if (!geom) return;
 
-    // throttle
+    // throttle pour réduire les mises à jour excessives
     const step = updateFps >= 60 ? 0 : 1 / Math.max(1, updateFps);
     if (step > 0) {
       acc.current += delta;
@@ -184,7 +181,6 @@ export default function GasLeaks({
 
       ages[i] += dt;
 
-      // drag
       const dragFactor = Math.max(0, 1 - data.dragArr[li] * dt);
       vel[idx] *= dragFactor;
       vel[idx + 1] *= dragFactor;
@@ -194,7 +190,6 @@ export default function GasLeaks({
       pos[idx + 1] += vel[idx + 1] * dt;
       pos[idx + 2] += vel[idx + 2] * dt;
 
-      // respawn distance / age
       const dx = pos[idx] - data.ox[li];
       const dy = pos[idx + 1] - data.oy[li];
       const dz = pos[idx + 2] - data.oz[li];
@@ -211,7 +206,7 @@ export default function GasLeaks({
   });
 
   return (
-    <points ref={ref} frustumCulled>
+    <points ref={ref} frustumCulled={false}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
@@ -220,8 +215,9 @@ export default function GasLeaks({
           count={count}
         />
       </bufferGeometry>
+
       <pointsMaterial
-        map={smokeTex}
+        map={tex}
         transparent
         alphaTest={0.02}
         opacity={opacity}
@@ -233,3 +229,5 @@ export default function GasLeaks({
     </points>
   );
 }
+
+export default memo(GasLeaks);

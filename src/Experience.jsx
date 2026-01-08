@@ -7,13 +7,15 @@ import Factory from "./Factory";
 import Buttons from "./Buttons";
 import Camera from "./Camera";
 import Sounds from "./Sounds";
-import Fire from "./Fire";
+import Smoke from "./Smoke";
 import GasLeaks from "./GasLeaks";
 
 export default function Experience({ objectToView, handleSelectView, muted }) {
   const groupRef = useRef(null);
   const cameraRef = useRef(null);
   const showButtons = objectToView?.id !== "view0";
+  const showFire = objectToView?.id === "view3";
+  const showGasLeaks = objectToView?.id === "view6";
 
   const moveCameraTo = (view) => {
     if (cameraRef.current) {
@@ -60,19 +62,21 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
         />
         <Sounds muted={muted} />
         {/* Cheminées */}
-        <Fire origin={[15.7, 12, -4.7]} radius={0.6} height={10} />
-        <Fire origin={[21.5, 13, -4.7]} radius={0.7} height={15} />
+        <Smoke origin={[15.7, 12, -4.7]} radius={0.6} height={10} />
+        <Smoke origin={[21.5, 13, -4.7]} radius={0.7} height={15} />
         {/* Incendie */}
-        <Fire
-          origin={[-4.5, -1, -22.5]}
-          radius={0.6}
-          height={5}
-          size={1.3}
-          count={200}
-          speed={0.004}
-          isFire
-        />
-        <GasLeaks />
+        {showFire && (
+          <Smoke
+            origin={[-4.5, -1, -22.5]}
+            radius={0.6}
+            height={5}
+            size={1}
+            speed={0.004}
+            count={200}
+            isFire
+          />
+        )}
+        {showGasLeaks && <GasLeaks />}
       </group>
     </>
   );
