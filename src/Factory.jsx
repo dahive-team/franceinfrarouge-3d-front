@@ -16,6 +16,7 @@ export default function Factory({ onClickEvent, moveCameraTo, ...props }) {
   useEffect(() => {
     scene.traverse((child) => {
       if (child.isMesh) {
+        console.log(child.userData);
         if (child.userData.addCastShadow) {
           child.castShadow = true;
         }

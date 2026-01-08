@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { AudioContext } from "three";
 import { Canvas } from "@react-three/fiber";
 import { ReactLenis } from "lenis/react";
@@ -102,12 +102,14 @@ export default function App() {
             position: [-20, 10, 20],
           }}
         >
-          <Experience
-            objectToView={viewContent}
-            handleSelectView={handleSelectView}
-            sidebarIsHidden={viewContent === null}
-            muted={muted}
-          />
+          <Suspense fallback={null}>
+            <Experience
+              objectToView={viewContent}
+              handleSelectView={handleSelectView}
+              sidebarIsHidden={viewContent === null}
+              muted={muted}
+            />
+          </Suspense>
         </Canvas>
         <SideBar
           sidebarRef={sidebarRef}

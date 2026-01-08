@@ -41,9 +41,9 @@ const LEAKS = [
   },
 ];
 
-function GasLeaks({ count = 160, size = 0.9, opacity = 0.22, updateFps = 30 }) {
+function GasLeaks({ count = 160, size = 0.9, opacity = 0.7, updateFps = 30 }) {
   const ref = useRef(null);
-  const tex = useTexture("/particle-smoke.png");
+  const tex = useTexture("/particle-gas.png");
 
   // Pré-calcul des valeurs statiques
   const data = useMemo(() => {

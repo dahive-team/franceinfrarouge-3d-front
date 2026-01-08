@@ -10,8 +10,8 @@ export default function Smoke({
   origin = [0, 0, 0],
   radius = 0.2,
   height = 1.5,
-  size = 1.5,
-  speed = 0.007,
+  size = 1.8,
+  speed = 0.004,
   isFire = false,
 }) {
   const pointsRef = useRef();

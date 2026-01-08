@@ -14,8 +14,6 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
   const groupRef = useRef(null);
   const cameraRef = useRef(null);
   const showButtons = objectToView?.id !== "view0";
-  const showFire = objectToView?.id === "view3";
-  const showGasLeaks = objectToView?.id === "view6";
 
   const moveCameraTo = (view) => {
     if (cameraRef.current) {
@@ -65,18 +63,15 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
         <Smoke origin={[15.7, 12, -4.7]} radius={0.6} height={10} />
         <Smoke origin={[21.5, 13, -4.7]} radius={0.7} height={15} />
         {/* Incendie */}
-        {showFire && (
-          <Smoke
-            origin={[-4.5, -1, -22.5]}
-            radius={0.6}
-            height={5}
-            size={1}
-            speed={0.004}
-            count={200}
-            isFire
-          />
-        )}
-        {showGasLeaks && <GasLeaks />}
+        <Smoke
+          origin={[-4.5, -1, -22.5]}
+          radius={0.6}
+          height={5}
+          size={1}
+          count={200}
+          isFire
+        />
+        <GasLeaks />
       </group>
     </>
   );
