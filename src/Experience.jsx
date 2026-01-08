@@ -1,6 +1,6 @@
-import { useEffect, useRef, Suspense } from "react";
+import { useEffect, useRef } from "react";
 import { Sky } from "@react-three/drei";
-// import { useControls } from "leva";
+import { useControls } from "leva";
 import { Perf } from "r3f-perf";
 
 import Factory from "./Factory";
@@ -28,9 +28,30 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
     objectToView && moveCameraTo(objectToView);
   }, [objectToView]);
 
+  const { globalLight, directionalLight, showPerf } = useControls({
+    globalLight: {
+      value: 1,
+      min: 0,
+      max: 5,
+      step: 0.1,
+      label: "Lumière globale",
+    },
+    directionalLight: {
+      value: 3,
+      min: 0,
+      max: 5,
+      step: 0.1,
+      label: "Lumière directionnelle",
+    },
+    showPerf: {
+      value: true,
+      label: "Show performance stats",
+    },
+  });
+
   return (
     <>
-      <Perf position="bottom-left" />
+      {showPerf && <Perf position="bottom-left" />}
 
       <Camera ref={cameraRef} />
       <Sky distance={450000} sunPosition={[10, 1, 10]} />
@@ -39,7 +60,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
         // shadow-bias={0.4}
         shadow-bias={-0.05}
         position={[10, 20, 20]}
-        intensity={3}
+        intensity={directionalLight}
         shadow-camera-top={40}
         shadow-camera-bottom={-40}
         shadow-camera-left={-40}
@@ -49,7 +70,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
         shadow-mapSize={800}
         color={"rgba(255, 235, 200, 1)"}
       />
-      <ambientLight intensity={1} />
+      <ambientLight intensity={globalLight} />
       <group ref={groupRef}>
         <Factory scale={0.4} position-z={-2.6} />
         <Buttons
@@ -76,21 +97,3 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
     </>
   );
 }
-
-// const { rotationSpeed, planeColor, showPerf } = useControls({
-//   rotationSpeed: {
-//     value: 0,
-//     min: 0,
-//     max: 2,
-//     step: 0.2,
-//     label: "Rotation speed",
-//   },
-//   planeColor: {
-//     value: "#98ff93",
-//     label: "Ground color",
-//   },
-//   showPerf: {
-//     value: true,
-//     label: "Show performance stats",
-//   },
-// });
