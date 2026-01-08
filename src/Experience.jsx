@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { Sky } from "@react-three/drei";
 import { useControls } from "leva";
 import { Perf } from "r3f-perf";
+import { Color } from "three";
 
 import Factory from "./Factory";
 import Buttons from "./Buttons";
@@ -28,7 +29,7 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
     objectToView && moveCameraTo(objectToView);
   }, [objectToView]);
 
-  const { globalLight, directionalLight, showPerf } = useControls({
+  const { globalLight, directionalLight, colorLight, showPerf } = useControls({
     globalLight: {
       value: 1,
       min: 0,
@@ -43,11 +44,22 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
       step: 0.1,
       label: "Lumière directionnelle",
     },
+    colorLight: {
+      r: 255,
+      g: 235,
+      b: 200,
+      label: "Couleur de la lumière",
+    },
     showPerf: {
       value: true,
       label: "Show performance stats",
     },
   });
+
+  const lightColor = useMemo(
+    () => new Color(colorLight.r / 255, colorLight.g / 255, colorLight.b / 255),
+    [colorLight]
+  );
 
   return (
     <>
@@ -68,9 +80,9 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
         shadow-camera-near={0.1}
         shadow-camera-far={50}
         shadow-mapSize={800}
-        color={"rgba(255, 235, 200, 1)"}
+        color={lightColor}
       />
-      <ambientLight intensity={globalLight} />
+      <ambientLight intensity={globalLight} color={colorLight} />
       <group ref={groupRef}>
         <Factory scale={0.4} position-z={-2.6} />
         <Buttons
