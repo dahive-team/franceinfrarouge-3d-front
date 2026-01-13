@@ -6,11 +6,11 @@ import { useTexture } from "@react-three/drei";
 const rand = (min, max) => min + Math.random() * (max - min);
 
 export default function Smoke({
-  count = 130,
+  count = 50,
   origin = [0, 0, 0],
   radius = 0.2,
   height = 1.5,
-  size = 2.5,
+  size = 5,
   speed = 0.004,
   isFire = false,
 }) {
