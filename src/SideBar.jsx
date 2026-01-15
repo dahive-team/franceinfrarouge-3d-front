@@ -19,64 +19,69 @@ export default function SideBar({
 
   return (
     <AnimatePresence mode="wait">
-      <m.div
-        key={view === "view1"}
-        initial={{ opacity: 0, y: 100 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -100 }}
-        transition={{ type: "spring", stiffness: 150, damping: 24 }}
-        className={`journey-sidebar-wrapper ${
-          viewContent?.triggerSidebar ? "show" : ""
-        }`}
-      >
-        {!isInitialView && (
-          <div className="journey-prev-next-buttons">
-            {prevView && (
-              <button
-                className="prev factory3d-has-glass-effect factory3d-has-hover-effect"
-                onClick={() => handleSelectView(prevView?.id)}
-              />
-            )}
-            {nextView && (
-              <button
-                className="next factory3d-has-glass-effect factory3d-has-hover-effect"
-                onClick={() => handleSelectView(nextView?.id)}
-              />
-            )}
-          </div>
-        )}
-        <AnimatePresence mode="wait">
-          {view !== "view1" && (
-            <m.aside
-              key={viewContent?.id}
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -100 }}
-              transition={{ type: "spring", stiffness: 150, damping: 24 }}
-              ref={sidebarRef}
-              data-lenis-prevent
-              className="journey-sidebar factory3d-has-glass-effect"
-            >
-              {viewContent?.image && (
-                <img src={viewContent?.image} alt={viewContent?.title} />
+      {view !== "view0" && (
+        <m.div
+          key={view === "view1"}
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -100 }}
+          transition={{ type: "spring", stiffness: 150, damping: 24 }}
+          className={`factory3d-sidebar-wrapper ${
+            viewContent?.triggerSidebar ? "show" : ""
+          }`}
+        >
+          {!isInitialView && (
+            <div className="factory3d-prev-next-buttons">
+              {prevView && (
+                <button
+                  className="prev factory3d-has-glass-effect factory3d-has-hover-effect"
+                  onClick={() => handleSelectView(prevView?.id)}
+                />
               )}
-              <div className="journey-sidebar-texts">
-                <button className="closeSidebar" onClick={handleCloseSidebar} />
-                <h1>{viewContent?.title}</h1>
-                <p>{viewContent?.description}</p>
-                <a
-                  href={viewContent?.link}
-                  className="journey-sidebar-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Découvrez nos solutions dédiées
-                </a>
-              </div>
-            </m.aside>
+              {nextView && (
+                <button
+                  className="next factory3d-has-glass-effect factory3d-has-hover-effect"
+                  onClick={() => handleSelectView(nextView?.id)}
+                />
+              )}
+            </div>
           )}
-        </AnimatePresence>
-      </m.div>
+          <AnimatePresence mode="wait">
+            {view !== "view1" && (
+              <m.aside
+                key={viewContent?.id}
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -100 }}
+                transition={{ type: "spring", stiffness: 150, damping: 24 }}
+                ref={sidebarRef}
+                data-lenis-prevent
+                className="factory3d-sidebar factory3d-has-glass-effect"
+              >
+                {viewContent?.image && (
+                  <img src={viewContent?.image} alt={viewContent?.title} />
+                )}
+                <div className="factory3d-sidebar-texts">
+                  <button
+                    className="closeSidebar"
+                    onClick={handleCloseSidebar}
+                  />
+                  <h2>{viewContent?.title}</h2>
+                  <p>{viewContent?.description}</p>
+                  <a
+                    href={viewContent?.link}
+                    className="factory3d-primary-button"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Découvrez nos solutions dédiées
+                  </a>
+                </div>
+              </m.aside>
+            )}
+          </AnimatePresence>
+        </m.div>
+      )}
     </AnimatePresence>
   );
 }

@@ -9,13 +9,13 @@ export default function Steps({ view, handleSelectView }) {
   return (
     <AnimatePresence>
       {!isInitialView && (
-        <div className="factory3d-journey-buttons-wrapper">
+        <div className="factory3d-buttons-wrapper">
           <m.ul
             variants={animateFromBottom({})}
             initial="initial"
             animate="animate"
             exit="exit"
-            className="factory3d-journey-buttons factory3d-has-glass-effect"
+            className="factory3d-buttons factory3d-has-glass-effect"
           >
             {views
               ?.filter(({ id }) => id !== "view0")
@@ -25,7 +25,7 @@ export default function Steps({ view, handleSelectView }) {
                 return (
                   <li
                     key={`step-${id}`}
-                    className={`factory3d-journey-button factory3d-has-hover-effect ${
+                    className={`factory3d-button factory3d-has-hover-effect ${
                       isActive ? "isActive" : ""
                     }`}
                   >
@@ -33,7 +33,7 @@ export default function Steps({ view, handleSelectView }) {
                       <m.div
                         layoutId="background"
                         id="background"
-                        className="factory3d-journey-button-background"
+                        className="factory3d-button-background"
                         transition={{
                           duration: 0.5,
                           type: "spring",

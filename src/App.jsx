@@ -92,7 +92,7 @@ export default function App() {
         <Steps view={view} handleSelectView={handleSelectView} />
         <CanvasLoader />
         <Canvas
-          dpr={[1, 1.25]}
+          dpr={[1, 1]}
           shadows
           className="factory3d-canvas"
           camera={{
@@ -123,7 +123,10 @@ export default function App() {
           muted={muted}
           handleMute={handleMute}
         />
-        <Title isInitialView={isInitialView} />
+        <Title
+          isInitialView={isInitialView}
+          handleSelectView={handleSelectView}
+        />
       </section>
     </LazyMotion>
   );
