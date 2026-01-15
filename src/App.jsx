@@ -92,7 +92,7 @@ export default function App() {
         <Steps view={view} handleSelectView={handleSelectView} />
         <CanvasLoader />
         <Canvas
-          dpr={[1, 1]}
+          dpr={[1, 1.25]}
           shadows
           className="factory3d-canvas"
           camera={{

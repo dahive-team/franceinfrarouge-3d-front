@@ -321,9 +321,8 @@ body,
 
 .factory3d-sidebar-wrapper {
   position: absolute;
-  top: 0;
   right: -30vw;
-  bottom: 10vh;
+  bottom: 15vh;
   height: 60vh;
   opacity: 0;
   display: flex;
@@ -533,6 +532,7 @@ body,
   .factory3d-sidebar-wrapper {
     flex-direction: row;
     top: 10vh;
+    bottom: 10vh;
     height: 80vh;
   }
 
