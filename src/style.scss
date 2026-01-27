@@ -62,7 +62,9 @@ body,
 .factory3d-hero-background-container {
   position: relative;
   height: 100%;
-  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+  transition:
+    opacity 0.5s ease-out,
+    visibility 0.5s ease-out;
 
   &.hidden {
     opacity: 0;
@@ -205,7 +207,8 @@ body,
   opacity: 0;
   scale: 0.1;
   translate: 0rem 3rem;
-  transition: opacity 1.4s var(--factory-ease-primary),
+  transition:
+    opacity 1.4s var(--factory-ease-primary),
     scale 1.4s var(--factory-ease-primary),
     translate 1.4s var(--factory-ease-primary) 1s;
 }
@@ -275,7 +278,9 @@ body,
   border: 0;
   cursor: pointer;
   transform: translateZ(0);
-  transition: scale 0.2s ease-out, opacity 0.2s ease-out,
+  transition:
+    scale 0.2s ease-out,
+    opacity 0.2s ease-out,
     background-color 0.2s ease-out;
   animation: btn-breathe 5s ease-in-out infinite;
 }
@@ -297,7 +302,9 @@ body,
   height: 1rem;
   border-radius: 50px;
   background-color: white;
-  transition: scale 0.2s ease-out, background-color 0.2s ease-out;
+  transition:
+    scale 0.2s ease-out,
+    background-color 0.2s ease-out;
 }
 
 .focus-button:hover {
@@ -456,39 +463,6 @@ body,
   background-position: center;
   background-size: contain;
   translate: -50% -50%;
-}
-
-.journey-mute-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  position: absolute;
-  top: 1.5rem;
-  right: 1rem;
-  color: white;
-  text-shadow: 0px 0px 20px #5b5b5b;
-  font-size: 0.8rem;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  cursor: pointer;
-}
-
-.journey-mute-bars {
-  display: flex;
-  gap: 0.1rem;
-  margin-top: 0.1rem;
-  transition: gap 0.2s ease-out;
-}
-
-.journey-mute-bars-muted {
-  gap: 0;
-}
-
-.journey-mute-bar {
-  width: 0.07rem;
-  background-color: white;
-  height: 0.5rem;
 }
 
 #leva__root > div {

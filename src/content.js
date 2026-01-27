@@ -46,7 +46,7 @@ export const views = [
     cameraPosition: [-6, 3, -15],
     target: [0, -1, -35],
     triggerSidebar: true,
-    sound: "/sounds/birds.mp3",
+    sound: "/sounds/wildfire.mp3",
   },
   {
     id: "view4",
@@ -135,7 +135,7 @@ export const views = [
     cameraPosition: [-35, 10, 10],
     target: [-10, -10, 85],
     triggerSidebar: true,
-    sound: "/sounds/birds.mp3",
+    sound: "/sounds/hospital.mp3",
   },
 ];
 
