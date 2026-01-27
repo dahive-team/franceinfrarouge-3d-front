@@ -1,31 +1,35 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
+import { MeshToonMaterial } from "three";
 
 export default function Factory({ onClickEvent, moveCameraTo, ...props }) {
   const { scene, animations } = useGLTF("/factory.glb", true);
   const { actions, names } = useAnimations(animations, scene);
 
-  // Exécute les animations
-  useEffect(() => {
-    names?.map((name) => {
-      actions[name]?.play();
-    });
-  }, [actions, names]);
+  // On chharge le meshToonMaterial une seule fois
+  const masterToonMaterial = useMemo(() => new MeshToonMaterial(), []);
 
-  // Applique les ombres aux meshes qui en ont besoin
   useEffect(() => {
+    // On exécute les animations
+    names?.forEach((name) => actions[name]?.play());
+
     scene.traverse((child) => {
       if (child.isMesh) {
-        if (child.userData.addCastShadow) {
-          child.castShadow = true;
-        }
+        // On clone le matériau de base
+        const newMaterial = masterToonMaterial.clone();
 
-        if (child.userData.addReceiveShadow) {
-          child.receiveShadow = true;
-        }
+        // On injecte les propriétés du matériau d'origine de Blender
+        newMaterial.map = child.material.map;
+        newMaterial.color.copy(child.material.color);
+
+        child.material = newMaterial;
+
+        // On applique les ombres
+        if (child.userData.addCastShadow) child.castShadow = true;
+        if (child.userData.addReceiveShadow) child.receiveShadow = true;
       }
     });
-  }, [scene]);
+  }, [scene, actions, names, masterToonMaterial]);
 
   return (
     <group {...props} dispose={null}>

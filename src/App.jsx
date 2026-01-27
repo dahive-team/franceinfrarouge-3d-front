@@ -9,7 +9,6 @@ import { animateFromBottom } from "../lib/animations.js";
 
 import Experience from "./Experience.jsx";
 import SideBar from "./SideBar.jsx";
-import MuteButton from "./MuteButton.jsx";
 import CanvasLoader from "./CanvasLoader.jsx";
 import Steps from "./Steps.jsx";
 import Title from "./Title.jsx";
@@ -117,11 +116,6 @@ export default function App() {
           prevView={prevView}
           nextView={nextView}
           view={view}
-        />
-        <MuteButton
-          isInitialView={isInitialView}
-          muted={muted}
-          handleMute={handleMute}
         />
         <Title
           isInitialView={isInitialView}

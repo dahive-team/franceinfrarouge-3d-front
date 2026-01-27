@@ -1,15 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { Sky } from "@react-three/drei";
-// import { useControls } from "leva";
 import { Perf } from "r3f-perf";
+import { Color } from "three";
+// import { BlendFunction } from "postprocessing";
+import { useControls } from "leva";
 
 import Factory from "./Factory";
 import Buttons from "./Buttons";
 import Camera from "./Camera";
-import Sounds from "./Sounds";
 import Smoke from "./Smoke";
 import GasLeaks from "./GasLeaks";
-import { object } from "framer-motion/client";
 
 export default function Experience({ objectToView, handleSelectView, muted }) {
   const groupRef = useRef(null);
@@ -29,9 +29,68 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
     objectToView && moveCameraTo(objectToView);
   }, [objectToView]);
 
+  const {
+    directionalLightIntensity,
+    directionalLightColor,
+    ambientLightIntensity,
+    ambientLight,
+    showPerf,
+  } = useControls({
+    directionalLightIntensity: {
+      value: 1,
+      min: 0,
+      max: 5,
+      step: 0.1,
+      label: "Directional intensity",
+    },
+    directionalLightColor: {
+      r: 211,
+      g: 199,
+      b: 179,
+      label: "Directional color",
+    },
+    ambientLightIntensity: {
+      value: 1.4,
+      min: 0,
+      max: 5,
+      step: 0.1,
+      label: "Ambient intensity",
+    },
+    ambientLight: {
+      r: 255,
+      g: 255,
+      b: 255,
+      label: "Ambient color",
+    },
+    showPerf: {
+      value: true,
+      label: "Performance",
+    },
+  });
+
+  const globalAmbientLight = useMemo(
+    () =>
+      new Color(
+        ambientLight.r / 255,
+        ambientLight.g / 255,
+        ambientLight.b / 255,
+      ),
+    [ambientLight],
+  );
+
+  const globalDirectionalLight = useMemo(
+    () =>
+      new Color(
+        directionalLightColor.r / 255,
+        directionalLightColor.g / 255,
+        directionalLightColor.b / 255,
+      ),
+    [directionalLightColor],
+  );
+
   return (
     <>
-      <Perf position="bottom-left" />
+      {showPerf && <Perf position="top-right" />}
 
       <Camera ref={cameraRef} />
       <Sky distance={450000} sunPosition={[10, 1, 10]} />
@@ -40,7 +99,6 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
         // shadow-bias={0.4}
         shadow-bias={-0.05}
         position={[10, 20, 20]}
-        intensity={2}
         shadow-camera-top={40}
         shadow-camera-bottom={-40}
         shadow-camera-left={-40}
@@ -48,9 +106,13 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
         shadow-camera-near={0.1}
         shadow-camera-far={50}
         shadow-mapSize={800}
-        color="#e4d0afff"
+        intensity={directionalLightIntensity}
+        color={globalDirectionalLight}
       />
-      <ambientLight intensity={1} />
+      <ambientLight
+        intensity={ambientLightIntensity}
+        color={globalAmbientLight}
+      />
       <group ref={groupRef}>
         <Factory scale={0.4} position-z={-2.6} />
         <Buttons
@@ -59,7 +121,6 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
           currentObject={objectToView}
           showButtons={showButtons}
         />
-        <Sounds muted={muted} />
         {/* Cheminées */}
         <Smoke origin={[15.8, 13, -4.7]} radius={0.7} height={15} />
         <Smoke origin={[21.5, 13, -4.7]} radius={0.7} height={15} />
@@ -77,30 +138,3 @@ export default function Experience({ objectToView, handleSelectView, muted }) {
     </>
   );
 }
-
-// const { globalLight, directionalLight, colorLight, showPerf } = useControls({
-//     globalLight: {
-//       value: 1,
-//       min: 0,
-//       max: 5,
-//       step: 0.1,
-//       label: "Lumière globale",
-//     },
-//     directionalLight: {
-//       value: 2,
-//       min: 0,
-//       max: 5,
-//       step: 0.1,
-//       label: "Lumière directionnelle",
-//     },
-//     colorLight: {
-//       r: 255,
-//       g: 235,
-//       b: 200,
-//       label: "Couleur de la lumière",
-//     },
-//     showPerf: {
-//       value: true,
-//       label: "Show performance stats",
-//     },
-//   });
