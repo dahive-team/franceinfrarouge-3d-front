@@ -21,6 +21,8 @@ export default function Factory({ onClickEvent, moveCameraTo, ...props }) {
         // On injecte les propriétés du matériau d'origine de Blender
         newMaterial.map = child.material.map;
         newMaterial.color.copy(child.material.color);
+        child.material.envMapIntensity = 0;
+        child.material.precision = "lowp";
 
         child.material = newMaterial;
 
