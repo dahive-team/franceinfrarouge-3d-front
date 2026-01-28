@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, Suspense } from "react";
-import { AudioContext } from "three";
 import { Canvas } from "@react-three/fiber";
 import { ReactLenis } from "lenis/react";
 import { LazyMotion, m } from "framer-motion";
@@ -21,7 +20,6 @@ export default function App() {
   const scrollCooldown = useRef(false);
   const sidebarRef = useRef(null);
   const [view, setView] = useState("view0");
-  const [muted, setMuted] = useState(true);
   const isInitialView = view === "view0";
 
   const handleSelectView = (v) => {
@@ -61,19 +59,6 @@ export default function App() {
     };
   }, [viewContent, nextView, prevView]);
 
-  const handleMute = () => {
-    setMuted((prev) => {
-      const newMuted = !prev;
-
-      const ctx = AudioContext.getContext();
-      if (ctx && ctx.state === "suspended") {
-        ctx.resume();
-      }
-
-      return newMuted;
-    });
-  };
-
   return (
     <LazyMotion features={loadDomAnimations} strict>
       <ReactLenis root />
@@ -93,7 +78,7 @@ export default function App() {
         <Canvas
           dpr={[1, 1.25]}
           gl={{ powerPreference: "high-performance", antialias: true }}
-          shadows
+          shadows={true}
           className="factory3d-canvas"
           camera={{
             fov: 45,
@@ -107,7 +92,6 @@ export default function App() {
               objectToView={viewContent}
               handleSelectView={handleSelectView}
               sidebarIsHidden={viewContent === null}
-              muted={muted}
             />
           </Suspense>
         </Canvas>
