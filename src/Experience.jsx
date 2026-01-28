@@ -2,7 +2,6 @@ import { useEffect, useRef, useMemo } from "react";
 import { Sky } from "@react-three/drei";
 import { Perf } from "r3f-perf";
 import { Color } from "three";
-// import { BlendFunction } from "postprocessing";
 import { useControls } from "leva";
 
 import Factory from "./Factory";
@@ -11,7 +10,7 @@ import Camera from "./Camera";
 import Smoke from "./Smoke";
 import GasLeaks from "./GasLeaks";
 
-export default function Experience({ objectToView, handleSelectView, muted }) {
+export default function Experience({ objectToView, handleSelectView }) {
   const groupRef = useRef(null);
   const cameraRef = useRef(null);
   const showButtons = objectToView?.id !== "view0";
