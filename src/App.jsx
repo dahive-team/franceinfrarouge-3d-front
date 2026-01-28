@@ -92,7 +92,7 @@ export default function App() {
         <CanvasLoader />
         <Canvas
           dpr={[1, 1.25]}
-          gl={{ powerPreference: "high-performance" }}
+          gl={{ powerPreference: "high-performance", antialias: true }}
           shadows
           className="factory3d-canvas"
           camera={{

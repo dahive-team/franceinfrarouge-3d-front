@@ -3,32 +3,47 @@ import { useGLTF, useAnimations } from "@react-three/drei";
 import { MeshToonMaterial } from "three";
 
 export default function Factory({ onClickEvent, moveCameraTo, ...props }) {
-  const { scene, animations } = useGLTF("/factory.glb", true);
+  const { scene, animations } = useGLTF("/factory-perf.glb", true);
   const { actions, names } = useAnimations(animations, scene);
 
   // On chharge le meshToonMaterial une seule fois
   const masterToonMaterial = useMemo(() => new MeshToonMaterial(), []);
 
   useEffect(() => {
-    // On exécute les animations
-    names?.forEach((name) => actions[name]?.play());
+    if (actions && names) {
+      names.forEach((name) => actions[name]?.play());
+    }
+
+    const materialCache = new Map();
 
     scene.traverse((child) => {
-      if (child.isMesh) {
-        // On clone le matériau de base
-        const newMaterial = masterToonMaterial.clone();
+      if (child.isMesh && child.geometry) {
+        // Gestion des ombres
+        child.castShadow = true;
+        child.receiveShadow = true;
 
-        // On injecte les propriétés du matériau d'origine de Blender
-        newMaterial.map = child.material.map;
-        newMaterial.color.copy(child.material.color);
-        child.material.envMapIntensity = 0;
-        child.material.precision = "lowp";
+        // Gestion du meshToonMaterial avec cache pour optimiser la mémoire
+        const key = `${child.material.color.getHex()}_${child.material.map?.uuid || "no-map"}`;
 
-        child.material = newMaterial;
+        if (!materialCache.has(key)) {
+          const newMaterial = masterToonMaterial.clone();
+          newMaterial.map = child.material.map;
+          newMaterial.color.copy(child.material.color);
+          newMaterial.envMapIntensity = 0;
+          newMaterial.precision = "lowp";
+          newMaterial.needsUpdate = true;
+          materialCache.set(key, newMaterial);
+        }
 
-        // On applique les ombres
-        if (child.userData.addCastShadow) child.castShadow = true;
-        if (child.userData.addReceiveShadow) child.receiveShadow = true;
+        child.material = materialCache.get(key);
+
+        // Gestion des ombres
+        // if (child.userData.addCastShadow) {
+        //   child.castShadow = true;
+        // }
+        // if (child.userData.addReceiveShadow) {
+        //   child.receiveShadow = true;
+        // }
       }
     });
   }, [scene, actions, names, masterToonMaterial]);
@@ -40,4 +55,4 @@ export default function Factory({ onClickEvent, moveCameraTo, ...props }) {
   );
 }
 
-useGLTF.preload("/factory.glb");
+useGLTF.preload("/factory-perf.glb");

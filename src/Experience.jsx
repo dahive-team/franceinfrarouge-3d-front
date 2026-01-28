@@ -104,7 +104,7 @@ export default function Experience({ objectToView, handleSelectView }) {
         shadow-camera-right={40}
         shadow-camera-near={0.1}
         shadow-camera-far={50}
-        shadow-mapSize={300}
+        shadow-mapSize={400}
         intensity={directionalLightIntensity}
         color={globalDirectionalLight}
       />
