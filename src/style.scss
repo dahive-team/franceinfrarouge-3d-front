@@ -254,9 +254,9 @@ body,
 .focus-button-label {
   display: inline-flex;
   position: absolute;
-  top: -1.4rem;
+  top: -1.6rem;
   left: 50%;
-  font-size: clamp(0.7rem, 0.9vw, 1rem);
+  font-size: clamp(0.9rem, 1vw, 1.2rem);
   color: white;
   text-shadow: 0px 0px 3px #00000095;
   white-space: nowrap;
