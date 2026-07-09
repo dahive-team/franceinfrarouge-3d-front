@@ -137,6 +137,13 @@ export const views = [
     triggerSidebar: true,
     sound: "/sounds/hospital.mp3",
   },
+  {
+    id: "view10",
+    title: "< retour",
+    position: [-20, 10, 20],
+    cameraPosition: [-20, 10, 20],
+    target: [0, 0, 0],
+  },
 ];
 
 export const getView = (view) => {

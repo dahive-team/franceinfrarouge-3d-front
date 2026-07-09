@@ -11,7 +11,7 @@ export default function SideBar({
   view,
 }) {
   const viewContent = getView(view) || null;
-  const hideSidebar = view === "view0" || view === "view1";
+  const hideSidebar = view === "view0" || view === "view1" || view === "view10";
   const isView0 = view === "view0";
   const isView1 = view === "view1";
 
@@ -27,7 +27,7 @@ export default function SideBar({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -100 }}
         transition={{ type: "spring", stiffness: 150, damping: 24 }}
-        className={`factory3d-sidebar-wrapper show`}
+        className={`factory3d-sidebar-wrapper factory3d-sidebar-wrapper-show`}
       >
         <div className="factory3d-prev-next-buttons">
           {prevView && !isView1 && (
@@ -52,7 +52,6 @@ export default function SideBar({
               exit={{ opacity: 0, y: -100 }}
               transition={{ type: "spring", stiffness: 150, damping: 24 }}
               ref={sidebarRef}
-              data-lenis-prevent
               className="factory3d-sidebar factory3d-has-glass-effect"
             >
               {viewContent?.image && (

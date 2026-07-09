@@ -4,7 +4,11 @@ export default function CanvasLoader() {
       <img
         fetchpriority="high"
         className="factory3d-canvas-loader"
-        src="/loader-background.webp"
+        src={
+          import.meta.env.MODE === "production"
+            ? "https://franceinfrarouge-website.dev.dahive.fr/wp-content/uploads/2026/07/loader-background.webp"
+            : "/loader-background.webp"
+        }
         width="1920"
         height="1080"
         alt="Factory background"

@@ -19,8 +19,10 @@ export default function Buttons({
 
   const buttonIsActive = (id) => currentObject?.id === id;
 
-  // on exclut "view0" et "view1" et on garde l'index pour le delay
-  const items = views.filter((v) => v.id !== "view0" && v.id !== "view1");
+  // on exclut "view0", "view1" et "view10" et on garde l'index pour le delay
+  const items = views.filter(
+    (v) => v.id !== "view0" && v.id !== "view1" && v.id !== "view10",
+  );
 
   return (
     <group {...props} dispose={null}>

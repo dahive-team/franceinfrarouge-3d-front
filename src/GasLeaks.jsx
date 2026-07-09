@@ -43,7 +43,11 @@ const LEAKS = [
 
 function GasLeaks({ count = 160, size = 0.9, opacity = 0.7, updateFps = 30 }) {
   const ref = useRef(null);
-  const tex = useTexture("/particle-gas.png");
+  const tex = useTexture(
+    import.meta.env.MODE === "production"
+      ? "https://franceinfrarouge-website.dev.dahive.fr/wp-content/uploads/2026/07/particle-gas.png"
+      : "/particle-gas.png",
+  );
 
   // Pré-calcul des valeurs statiques
   const data = useMemo(() => {

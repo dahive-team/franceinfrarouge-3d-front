@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from "react";
 import { Sky } from "@react-three/drei";
-import { Perf } from "r3f-perf";
+// import { Perf } from "r3f-perf";
 import { Color } from "three";
 import { useControls } from "leva";
 
@@ -13,7 +13,8 @@ import GasLeaks from "./GasLeaks";
 export default function Experience({ objectToView, handleSelectView }) {
   const groupRef = useRef(null);
   const cameraRef = useRef(null);
-  const showButtons = objectToView?.id !== "view0";
+  const showButtons =
+    objectToView?.id !== "view0" && objectToView?.id !== "view10";
 
   const moveCameraTo = (view) => {
     if (cameraRef.current) {
@@ -28,74 +29,12 @@ export default function Experience({ objectToView, handleSelectView }) {
     objectToView && moveCameraTo(objectToView);
   }, [objectToView]);
 
-  const {
-    directionalLightIntensity,
-    directionalLightColor,
-    ambientLightIntensity,
-    ambientLight,
-    showPerf,
-  } = useControls({
-    directionalLightIntensity: {
-      value: 1,
-      min: 0,
-      max: 5,
-      step: 0.1,
-      label: "Directional intensity",
-    },
-    directionalLightColor: {
-      r: 211,
-      g: 199,
-      b: 179,
-      label: "Directional color",
-    },
-    ambientLightIntensity: {
-      value: 1.4,
-      min: 0,
-      max: 5,
-      step: 0.1,
-      label: "Ambient intensity",
-    },
-    ambientLight: {
-      r: 255,
-      g: 255,
-      b: 255,
-      label: "Ambient color",
-    },
-    showPerf: {
-      value: true,
-      label: "Performance",
-    },
-  });
-
-  const globalAmbientLight = useMemo(
-    () =>
-      new Color(
-        ambientLight.r / 255,
-        ambientLight.g / 255,
-        ambientLight.b / 255,
-      ),
-    [ambientLight],
-  );
-
-  const globalDirectionalLight = useMemo(
-    () =>
-      new Color(
-        directionalLightColor.r / 255,
-        directionalLightColor.g / 255,
-        directionalLightColor.b / 255,
-      ),
-    [directionalLightColor],
-  );
-
   return (
     <>
-      {showPerf && <Perf position="top-right" />}
-
       <Camera ref={cameraRef} />
       <Sky distance={450000} sunPosition={[10, 1, 10]} />
       <directionalLight
         castShadow
-        // shadow-bias={0.4}
         shadow-bias={-0.05}
         position={[10, 20, 20]}
         shadow-camera-top={40}
@@ -105,13 +44,10 @@ export default function Experience({ objectToView, handleSelectView }) {
         shadow-camera-near={0.1}
         shadow-camera-far={50}
         shadow-mapSize={400}
-        intensity={directionalLightIntensity}
-        color={globalDirectionalLight}
+        intensity={1}
+        color="#d3c7b3"
       />
-      <ambientLight
-        intensity={ambientLightIntensity}
-        color={globalAmbientLight}
-      />
+      <ambientLight intensity={1.4} color="#ffffff" />
       <group ref={groupRef}>
         <Factory scale={0.4} position-z={-2.6} />
         <Buttons

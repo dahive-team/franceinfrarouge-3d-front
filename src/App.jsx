@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { ReactLenis } from "lenis/react";
 import { LazyMotion, m } from "framer-motion";
 
 import { getView, getPrevNextView } from "./content.js";
@@ -20,7 +19,8 @@ export default function App() {
   const scrollCooldown = useRef(false);
   const sidebarRef = useRef(null);
   const [view, setView] = useState("view0");
-  const isInitialView = view === "view0";
+  const [fullWidth, setFullWidth] = useState(false);
+  const isInitialOrLastView = view === "view0" || view === "view10";
 
   const handleSelectView = (v) => {
     setView(v);
@@ -34,36 +34,75 @@ export default function App() {
     if (!container) return;
 
     const handleScroll = (e) => {
-      // Si scrollCooldown est actif, on ignore l'événement
-      if (scrollCooldown.current) return;
-
       const delta = e.deltaY;
 
-      if (delta > 50 && nextView) {
-        setView(nextView.id);
-        scrollCooldown.current = true;
-      } else if (delta < -50 && prevView) {
-        setView(prevView.id);
-        scrollCooldown.current = true;
-      }
+      // SCÉNARIO 1 : L'utilisateur scroll vers le bas
+      if (delta > 20 && nextView) {
+        // Bloquer le scroll de la page WordPress pour rester sur la 3D
+        if (e.cancelable) e.preventDefault();
 
-      setTimeout(() => {
-        scrollCooldown.current = false;
-      }, 1500);
+        if (!scrollCooldown.current) {
+          setView(nextView.id);
+          scrollCooldown.current = true;
+          setTimeout(() => {
+            scrollCooldown.current = false;
+          }, 1200);
+        }
+      }
+      // SCÉNARIO 2 : L'utilisateur scroll vers le haut
+      else if (delta < -20 && prevView) {
+        if (e.cancelable) e.preventDefault();
+
+        if (!scrollCooldown.current) {
+          setView(prevView.id);
+          scrollCooldown.current = true;
+          setTimeout(() => {
+            scrollCooldown.current = false;
+          }, 1200);
+        }
+      }
     };
 
-    container.addEventListener("wheel", handleScroll, { passive: true });
+    container.addEventListener("wheel", handleScroll, { passive: false });
 
     return () => {
       container.removeEventListener("wheel", handleScroll);
     };
   }, [viewContent, nextView, prevView]);
 
+  // Passe en full width en fonction de la view
+  useEffect(() => {
+    if (isInitialOrLastView) {
+      setFullWidth(false);
+      return;
+    }
+
+    setFullWidth(true);
+  }, [view]);
+
+  // Scroll vers la scène quand on passe en full width
+  useEffect(() => {
+    if (!fullWidth) return;
+
+    const timer = setTimeout(() => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [fullWidth]);
+
   return (
     <LazyMotion features={loadDomAnimations} strict>
-      <ReactLenis root />
-      <section ref={scrollContainerRef} className="factory3d-hero">
-        {!isInitialView && (
+      <section
+        ref={scrollContainerRef}
+        className={`factory3d-hero ${fullWidth ? "factory3d-hero-full-width" : ""}`}
+      >
+        {!isInitialOrLastView && (
           <m.button
             variants={animateFromBottom({ delay: 1 })}
             initial="initial"
@@ -102,10 +141,10 @@ export default function App() {
           nextView={nextView}
           view={view}
         />
-        <Title
+        {/* <Title
           isInitialView={isInitialView}
           handleSelectView={handleSelectView}
-        />
+        /> */}
       </section>
     </LazyMotion>
   );

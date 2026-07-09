@@ -3,12 +3,12 @@ import { views } from "./content.js";
 import { animateFromBottom } from "../lib/animations.js";
 
 export default function Steps({ view, handleSelectView }) {
-  const isInitialView = view === "view0";
+  const isInitialOrLastView = view === "view0" || view === "view10";
   const buttonIsActive = (id) => id === view;
 
   return (
     <AnimatePresence>
-      {!isInitialView && (
+      {!isInitialOrLastView && (
         <div className="factory3d-buttons-wrapper">
           <m.ul
             variants={animateFromBottom({})}
@@ -18,7 +18,7 @@ export default function Steps({ view, handleSelectView }) {
             className="factory3d-buttons factory3d-has-glass-effect"
           >
             {views
-              ?.filter(({ id }) => id !== "view0")
+              ?.filter(({ id }) => id !== "view0" && id !== "view10")
               ?.map(({ id, title }) => {
                 const isActive = buttonIsActive(id);
 

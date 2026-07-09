@@ -15,8 +15,16 @@ export default function Smoke({
   isFire = false,
 }) {
   const pointsRef = useRef();
-  const fireTex = useTexture("/particle-flame.png");
-  const smokeTex = useTexture("/particle-smoke.png");
+  const fireTex = useTexture(
+    import.meta.env.MODE === "production"
+      ? "https://franceinfrarouge-website.dev.dahive.fr/wp-content/uploads/2026/07/particle-flame.png"
+      : "particle-flame.png",
+  );
+  const smokeTex = useTexture(
+    import.meta.env.MODE === "production"
+      ? "https://franceinfrarouge-website.dev.dahive.fr/wp-content/uploads/2026/07/particle-smoke.png"
+      : "particle-smoke.png",
+  );
   const sprite = isFire ? fireTex : smokeTex;
 
   // ✅ Création des buffers UNE SEULE FOIS tant que `count` ne change pas

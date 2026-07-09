@@ -35,7 +35,6 @@
 html,
 body,
 #root {
-  position: fixed;
   width: 100%;
   height: 100%;
   margin: 0;
@@ -55,8 +54,13 @@ body,
 
 .factory3d-hero {
   position: relative;
-  height: 100%;
-  background-color: black;
+  height: 100vh;
+  clip-path: inset(10% round 20px);
+  transition: clip-path 0.5s ease-in-out;
+}
+
+.factory3d-hero-full-width {
+  clip-path: inset(0% round 0px);
 }
 
 .factory3d-hero-background-container {
@@ -86,10 +90,10 @@ body,
 
 .factory3d-return-button {
   position: absolute;
-  top: 1rem;
+  top: 3rem;
   left: 1rem;
-  width: 3rem;
-  height: 3rem;
+  width: 5rem;
+  height: 5rem;
   border: none;
   background-image: url("/return.svg");
   background-repeat: no-repeat;
@@ -109,8 +113,8 @@ body,
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 
 .factory3d-canvas-loader {
@@ -141,7 +145,7 @@ body,
 .factory3d-buttons-wrapper {
   display: none;
   position: absolute;
-  top: 0rem;
+  top: 2rem;
   left: 45%;
   z-index: 1;
   translate: -45% 0;
@@ -186,7 +190,7 @@ body,
     background-color: transparent;
     border: 0;
     padding: 0.5rem;
-    font-size: 1rem;
+    font-size: 1.3rem;
     color: white;
     text-shadow: 0px 0px 20px #5b5b5b;
     transition: color 1.1s var(--factory-ease-primary);
@@ -197,8 +201,6 @@ body,
   position: absolute !important;
   top: 0;
   left: 0;
-  width: 100vw !important;
-  height: 100vh !important;
   z-index: 0;
 }
 
@@ -338,7 +340,7 @@ body,
   gap: 0.5rem;
 }
 
-.factory3d-sidebar-wrapper.show {
+.factory3d-sidebar-wrapper.factory3d-sidebar-wrapper-show {
   right: 2rem;
 }
 
@@ -350,8 +352,8 @@ body,
     position: relative;
     color: black;
     border: 1px solid black;
-    width: 3rem;
-    height: 3rem;
+    width: 4rem;
+    height: 4rem;
     border-radius: 50px;
     cursor: pointer;
     border: 0;
@@ -409,15 +411,17 @@ body,
   h2 {
     margin-bottom: 0;
     color: white;
-    font-size: clamp(1.5rem, 2vw, 6rem);
+    font-size: clamp(1.5rem, 1.8vw, 5rem);
+    font-weight: bold;
     line-height: 1.1;
     margin-top: 0;
     width: 90%;
   }
 
   p {
-    font-size: clamp(0.9rem, 1vw, 1.1rem);
-    line-height: 1.3;
+    font-size: clamp(0.9rem, 1.5vw, 1.5rem);
+    line-height: 1.4;
+    margin: 1rem 0;
     color: white;
     word-wrap: break-word;
   }
@@ -504,10 +508,11 @@ body,
   }
 
   .factory3d-sidebar-wrapper {
+    display: flex;
     flex-direction: row;
     top: 10vh;
     bottom: 10vh;
-    height: 80vh;
+    height: auto;
   }
 
   .factory3d-prev-next-buttons {
@@ -526,17 +531,13 @@ body,
     padding: 2rem;
   }
 
-  .factory3d-enter-button {
-    display: none;
-  }
-
   .factory3d-primary-button {
     font-size: 1rem;
   }
 
   .factory3d-hero-background-container {
     &::before {
-      opacity: 0.5;
+      opacity: 0.4;
     }
   }
 }

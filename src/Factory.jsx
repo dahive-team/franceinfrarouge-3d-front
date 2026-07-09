@@ -3,7 +3,10 @@ import { useGLTF, useAnimations } from "@react-three/drei";
 import { MeshToonMaterial } from "three";
 
 export default function Factory({ onClickEvent, moveCameraTo, ...props }) {
-  const { scene, animations } = useGLTF("/factory-perf.glb", true);
+  const { scene, animations } = useGLTF(
+    `${import.meta.env.VITE_ASSETS_BASE_URL}factory-perf.glb`,
+    true,
+  );
   const { actions, names } = useAnimations(animations, scene);
 
   // On chharge le meshToonMaterial une seule fois
@@ -55,4 +58,4 @@ export default function Factory({ onClickEvent, moveCameraTo, ...props }) {
   );
 }
 
-useGLTF.preload("/factory-perf.glb");
+useGLTF.preload(`${import.meta.env.VITE_ASSETS_BASE_URL}factory-perf.glb`);
